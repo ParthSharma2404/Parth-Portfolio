@@ -1,0 +1,216 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-primary: #ffffff;
+  --color-brand-secondary: #a1a1aa;
+  --color-accent: #86bd22;
+  --color-bg-deep: #09090b;
+  --color-bg-card: #18181b;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Outfit", sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+  --background: #09090b;
+  --foreground: #ffffff;
+  --accent: #86bd22;
+  scroll-behavior: smooth;
+}
+
+.text-accent {
+  color: #86bd22 !important;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: #09090b !important;
+  color: #ffffff !important;
+  font-family: "Inter", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+h1, h2, h3 {
+  font-family: "Outfit", sans-serif;
+}
+
+.glass-nav {
+  background: rgba(9, 9, 11, 0.8);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-hover {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-8px);
+  background-color: #121214;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 20px 40px -20px rgba(0,0,0,0.5);
+}
+
+/* Animations */
+@keyframes mesh-gradient {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(10%, 10%) scale(1.1); }
+  66% { transform: translate(-10%, 5%) scale(0.9); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes text-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.bg-mesh-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: -1;
+  background: #09090b;
+}
+
+.mesh-blob {
+  position: absolute;
+  width: 80vw;
+  height: 80vw;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.25;
+  animation: mesh-gradient 25s infinite alternate cubic-bezier(0.45, 0, 0.55, 1);
+  will-change: transform;
+}
+
+.mesh-blob-1 {
+  background: radial-gradient(circle, #2563eb, transparent);
+  top: -20%;
+  left: -20%;
+}
+
+.mesh-blob-2 {
+  background: radial-gradient(circle, #9333ea, transparent);
+  bottom: -20%;
+  right: -20%;
+  animation-delay: -5s;
+}
+
+.mesh-blob-3 {
+  background: radial-gradient(circle, #ffffff, transparent);
+  top: 30%;
+  left: 30%;
+  animation-duration: 18s;
+  animation-delay: -10s;
+  opacity: 0.1;
+}
+
+.shimmer-text {
+  background: linear-gradient(
+    90deg, 
+    rgba(255,255,255,1) 0%, 
+    rgba(255,255,255,0.4) 50%, 
+    rgba(255,255,255,1) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: text-shimmer 4s linear infinite;
+}
+
+/* Reveal Animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-100 { transition-delay: 100ms; }
+.reveal-delay-150 { transition-delay: 150ms; }
+.reveal-delay-200 { transition-delay: 200ms; }
+.reveal-delay-300 { transition-delay: 300ms; }
+.reveal-delay-400 { transition-delay: 400ms; }
+.reveal-delay-500 { transition-delay: 500ms; }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 10px;
+  border: 2px solid #09090b;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
+
+/* Interactive Glow & Tilt */
+.glow-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.glow-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle 150px at var(--mouse-x, 0) var(--mouse-y, 0),
+    rgba(134, 189, 34, 0.15),
+    transparent 80%
+  );
+  opacity: 0;
+  transition: opacity 0.5s;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.glow-card:hover::before {
+  opacity: 1;
+}
+
+.tilt-card {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transition: transform 0.15s ease-out;
+}
+
+.tilt-content {
+  transform: translateZ(20px);
+}
+
+.bg-mesh-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  z-index: -1;
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+@keyframes music-bar {
+  0%, 100% { height: 4px; }
+  50% { height: 16px; }
+}
+
+.animate-music-bar {
+  animation: music-bar 0.8s ease-in-out infinite;
+}
