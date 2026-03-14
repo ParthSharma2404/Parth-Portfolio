@@ -127,9 +127,9 @@ function Contact() {
           </div>
 
           {/* Contact Form Container */}
-          <div className="lg:col-span-3 bg-zinc-900/30 border border-zinc-800 p-6 sm:p-10 md:p-12 rounded-[2rem] reveal reveal-delay-300">
-            <form onSubmit={handleSubmit} className="space-y-8">
-            <div className="grid sm:grid-cols-2 gap-6">
+          <div className="lg:col-span-3 bg-zinc-900/30 border border-zinc-800 p-5 xs:p-8 sm:p-10 md:p-12 rounded-[2rem] reveal reveal-delay-300">
+            <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
+            <div className="grid sm:grid-cols-2 gap-5 sm:gap-6">
               <div className="space-y-2">
                 <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider pl-1">Name</label>
                 <input
