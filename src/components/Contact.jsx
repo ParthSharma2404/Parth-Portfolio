@@ -81,15 +81,15 @@ function Contact() {
   ];
 
   return (
-    <section className="min-h-screen px-6 py-24 flex flex-col items-center justify-center relative overflow-hidden" id="contact">
+    <section className="min-h-screen px-4 sm:px-6 py-16 md:py-24 flex flex-col items-center justify-center relative overflow-hidden" id="contact">
       
       {/* Decorative Blur */}
       <div className="absolute top-1/2 left-0 -translate-y-1/2 w-64 h-64 bg-accent/20 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="max-w-6xl w-full relative z-10">
         <div className="text-left mb-16">
-          <h2 className="text-5xl md:text-7xl font-display font-bold text-white mb-6 tracking-tighter">
-            Let's build<br />something great<span className="text-accent">.</span>
+          <h2 className="text-4xl sm:text-5xl md:text-7xl font-display font-bold text-white mb-6 tracking-tighter leading-tight">
+            Let's build<br className="hidden sm:block" /> something great<span className="text-accent">.</span>
           </h2>
           <p className="text-zinc-400 text-lg max-w-xl">
             Open for collaborations, new opportunities, and discussing creative solutions to complex problems.
@@ -106,16 +106,16 @@ function Contact() {
                 href={info.href} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className={`group reveal reveal-delay-${(index + 1) * 150} flex items-center gap-6 p-6 rounded-3xl bg-zinc-900/40 border border-zinc-800 hover:border-accent/50 hover:bg-zinc-800/50 transition-all duration-500`}
+                className={`group reveal reveal-delay-${(index + 1) * 150} flex items-center gap-4 sm:gap-6 p-4 sm:p-6 rounded-3xl bg-zinc-900/40 border border-zinc-800 hover:border-accent/50 hover:bg-zinc-800/50 transition-all duration-500`}
               >
-                <div className="w-12 h-12 rounded-2xl bg-zinc-800 flex items-center justify-center text-zinc-400 group-hover:bg-accent group-hover:text-zinc-950 transition-all duration-500 shadow-xl">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-zinc-800 flex-shrink-0 flex items-center justify-center text-zinc-400 group-hover:bg-accent group-hover:text-zinc-950 transition-all duration-500 shadow-xl">
                   {info.icon}
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-1">
                     {info.label}
                   </p>
-                  <p className="text-lg font-medium text-white group-hover:text-accent transition-colors">
+                  <p className="text-base sm:text-lg font-medium text-white group-hover:text-accent transition-colors truncate">
                     {info.value}
                   </p>
                 </div>
@@ -127,7 +127,7 @@ function Contact() {
           </div>
 
           {/* Contact Form Container */}
-          <div className="lg:col-span-3 bg-zinc-900/30 border border-zinc-800 p-8 md:p-12 rounded-[2rem] reveal reveal-delay-300">
+          <div className="lg:col-span-3 bg-zinc-900/30 border border-zinc-800 p-6 sm:p-10 md:p-12 rounded-[2rem] reveal reveal-delay-300">
             <form onSubmit={handleSubmit} className="space-y-8">
             <div className="grid sm:grid-cols-2 gap-6">
               <div className="space-y-2">
