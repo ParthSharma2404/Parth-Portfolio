@@ -8,7 +8,8 @@ const MusicPlayer = () => {
 
   useEffect(() => {
     // Standard HTML5 Audio implementation for instant response
-    const audio = new Audio('/doraemon.mp3');
+    // Use a hosted URL to bypass the corrupted local 2-byte file
+    const audio = new Audio('https://raw.githubusercontent.com/VedantBang26/Doraemon_Animation/main/doraemon.mp3');
     audio.loop = true;
     audio.volume = 0.5;
     audio.preload = 'auto'; // Force browser to start loading immediately
