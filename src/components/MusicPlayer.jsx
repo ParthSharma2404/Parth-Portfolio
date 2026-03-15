@@ -5,6 +5,7 @@ const MusicPlayer = () => {
   const [isReady, setIsReady] = useState(false);
   const iframeRef = useRef(null);
   const widgetRef = useRef(null);
+  const hasStarted = useRef(false);
 
   const trackUrl = "https://soundcloud.com/c-nguy-n-520304333/nst-doremon-tru-mu-a-h-c-2k1";
   const embedUrl = `https://w.soundcloud.com/player/?url=${encodeURIComponent(trackUrl)}&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false`;
@@ -40,8 +41,13 @@ const MusicPlayer = () => {
     } else {
       widgetRef.current.setVolume(50);
       widgetRef.current.play();
-      // Seek past the initial 4.5s of silence in the specific track
-      widgetRef.current.seekTo(2500);
+      
+      // Only skip silence on the very first play
+      if (!hasStarted.current) {
+        // Seek past the initial silence (~4.5s) to make it robust and accurate
+        widgetRef.current.seekTo(4500);
+        hasStarted.current = true;
+      }
     }
     setIsPlaying(!isPlaying);
   };
