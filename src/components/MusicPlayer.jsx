@@ -41,11 +41,10 @@ const MusicPlayer = () => {
     } else {
       widgetRef.current.setVolume(50);
       widgetRef.current.play();
-      
-      // Only skip silence on the very first play
+
+      // Skip silence immediately on first play for minimal lag
       if (!hasStarted.current) {
-        // Seek past the initial silence (~4.5s) to make it robust and accurate
-        widgetRef.current.seekTo(4500);
+        widgetRef.current.seekTo(1800);
         hasStarted.current = true;
       }
     }
