@@ -1,72 +1,62 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 const MusicPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isReady, setIsReady] = useState(false);
-  const iframeRef = useRef(null);
-  const widgetRef = useRef(null);
+  const audioRef = useRef(null);
   const hasStarted = useRef(false);
 
-  const trackUrl = "https://soundcloud.com/c-nguy-n-520304333/nst-doremon-tru-mu-a-h-c-2k1";
-  const embedUrl = `https://w.soundcloud.com/player/?url=${encodeURIComponent(trackUrl)}&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false`;
-
   useEffect(() => {
-    // Load SoundCloud Widget API
-    const script = document.createElement('script');
-    script.src = "https://w.soundcloud.com/player/api.js";
-    script.onload = () => {
-      if (window.SC) {
-        const widget = window.SC.Widget(iframeRef.current);
-        widgetRef.current = widget;
-        widget.bind(window.SC.Widget.Events.READY, () => {
-          setIsReady(true);
-        });
-        widget.bind(window.SC.Widget.Events.FINISH, () => {
-          setIsPlaying(false);
-        });
-      }
+    // Standard HTML5 Audio implementation for instant response
+    const audio = new Audio('/doraemon.mp3');
+    audio.loop = true;
+    audio.volume = 0.5;
+    audio.preload = 'auto'; // Force browser to start loading immediately
+    
+    // Use onloadeddata for a faster "ready" state than oncanplaythrough
+    audio.onloadeddata = () => {
+      setIsReady(true);
     };
-    document.body.appendChild(script);
+
+    audio.onended = () => {
+      setIsPlaying(false);
+    };
+
+    audioRef.current = audio;
 
     return () => {
-      document.body.removeChild(script);
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
     };
   }, []);
 
   const toggleMusic = () => {
-    if (!widgetRef.current || !isReady) return;
+    if (!audioRef.current) return;
 
     if (isPlaying) {
-      widgetRef.current.pause();
+      audioRef.current.pause();
     } else {
-      widgetRef.current.setVolume(50);
-      widgetRef.current.play();
-
-      // Skip silence immediately on first play for minimal lag
+      // Skip the silent/beat-only intro on first play for the large remix file
       if (!hasStarted.current) {
-        widgetRef.current.seekTo(1800);
+        audioRef.current.currentTime = 1.5; // Skip first 2.6s of silence/intro
         hasStarted.current = true;
       }
+
+      // Native audio play() is near-instant
+      audioRef.current.play().catch(err => {
+        console.error("Audio playback failed:", err);
+      });
     }
     setIsPlaying(!isPlaying);
   };
 
   return (
     <div className="fixed bottom-8 left-8 z-[100] flex items-center gap-4 group">
-      {/* Hidden SoundCloud Player for API Control */}
-      <iframe
-        ref={iframeRef}
-        src={embedUrl}
-        width="0"
-        height="0"
-        className="hidden pointer-events-none opacity-0"
-        allow="autoplay; encrypted-media"
-      />
-      
       <button 
         onClick={toggleMusic}
-        disabled={!isReady}
-        className={`group relative flex items-center justify-center w-12 h-12 rounded-full bg-zinc-900/40 border border-zinc-800/50 backdrop-blur-xl hover:border-accent/40 transition-all duration-300 shadow-2xl overflow-hidden ${!isReady ? 'opacity-50 cursor-wait' : ''}`}
+        className={`group relative flex items-center justify-center w-12 h-12 rounded-full bg-zinc-900/40 border border-zinc-800/50 backdrop-blur-xl hover:border-accent/40 transition-all duration-300 shadow-2xl overflow-hidden ${!isReady ? 'opacity-70 cursor-wait' : ''}`}
       >
         {/* Fill Background on Hover */}
         <div className="absolute inset-0 bg-accent/10 group-hover:bg-accent/20 transition-all duration-300" />
@@ -88,7 +78,7 @@ const MusicPlayer = () => {
 
       {/* Label */}
       <div className={`text-[9px] font-bold uppercase tracking-[0.2em] text-zinc-500/80 transition-opacity duration-300 ${isPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}`}>
-        {isReady ? 'Doraemon Mode' : 'Loading Audio...'}
+        {isReady || isPlaying ? 'Doraemon Mode' : 'Loading Audio...'}
       </div>
     </div>
   );
