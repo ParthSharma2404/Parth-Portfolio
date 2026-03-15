@@ -9,7 +9,7 @@ const MusicPlayer = () => {
   useEffect(() => {
     // Standard HTML5 Audio implementation for instant response
     // Use a hosted URL to bypass the corrupted local 2-byte file
-    const audio = new Audio('https://raw.githubusercontent.com/VedantBang26/Doraemon_Animation/main/doraemon.mp3');
+    const audio = new Audio('https://drive.google.com/file/d/1_SDYqffP6lCB3sACuxeIbgBsaXFWoy0b/view?usp=sharing');
     audio.loop = true;
     audio.volume = 0.5;
     audio.preload = 'auto'; // Force browser to start loading immediately
