@@ -19,7 +19,7 @@ function Project() {
       problem: "Many blogging platforms lack simplicity and scalability.",
       tech: ["React", "Node", "Express", "MongoDB", "JWT"],
       video: "/videos/blogo.mp4",
-      live: "#",
+      live: "https://blogo-not-your-average-blogging-bud-nine.vercel.app/",
       github: "https://github.com/ParthSharma2404/Blogo.---Not-Your-Average-Blogging-buddy-"
     },
     {
