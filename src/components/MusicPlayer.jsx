@@ -8,8 +8,8 @@ const MusicPlayer = () => {
 
   useEffect(() => {
     // Standard HTML5 Audio implementation for instant response
-    // Use the user's provided Google Drive song (Direct link conversion)
-    const audio = new Audio('https://drive.google.com/uc?export=download&id=1_SDYqffP6lCB3sACuxeIbgBsaXFWoy0b');
+    // Use the local uncorrupted MP3 file (restored from Google Drive)
+    const audio = new Audio('/doraemon.mp3');
     audio.loop = true;
     audio.volume = 0.5;
     audio.preload = 'auto'; // Force browser to start loading immediately
