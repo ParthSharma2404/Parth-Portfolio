@@ -35,11 +35,11 @@ const CursorFollower = () => {
   }, []);
 
   return (
-    <div 
-      ref={cursorRef} 
+      <div 
+        ref={cursorRef} 
       className="fixed top-0 left-0 w-8 h-8 -ml-4 -mt-4 rounded-full pointer-events-none z-[9999] opacity-30 mix-blend-screen bg-accent blur-xl"
-      style={{ willChange: 'transform' }}
-    />
+        style={{ willChange: 'transform' }}
+      />
   );
 };
 
