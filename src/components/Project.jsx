@@ -48,6 +48,21 @@ function Project() {
       video: "/videos/nits.webp",
       live: "https://nitsconstructionltd.co.uk/",
       github: "#"
+    },
+    {
+      title: "StudySync",
+      description: "A gamified productivity platform with a unique sketchbook aesthetic, designed to keep users engaged through interactive features.",
+      problem: "Traditional study tools often lack engagement and feel monotonous. StudySync introduces gamification and interactive elements to make learning a more enjoyable and rewarding experience.",
+      features: [
+        "LiveKit-integrated study rooms with animated progress bars and interactive task cards.",
+        "Progressive RPG Leveling system to reward consistent study habits.",
+        "Study Streaks and a dedicated Zen Mode for focused, distraction-free sessions.",
+        "Dynamic Bento Grid showcase and transparent user data security."
+      ],
+      tech: ["React", "LiveKit", "Node", "TailwindCSS"],
+      video: null, 
+      live: "https://studysync.fun",
+      github: "#"
     }
   ];
 
