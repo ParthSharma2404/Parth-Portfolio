@@ -15,7 +15,7 @@ function Project() {
         "Dynamic Bento Grid showcase and transparent user data security."
       ],
       tech: ["React", "LiveKit", "Node", "PostgreSQL", "Neon", "TailwindCSS"],
-      video: "/videos/studysync.png", 
+      video: "/videos/studysync.webp", 
       live: "https://studysync.fun",
       github: "#"
     },
