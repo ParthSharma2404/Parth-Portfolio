@@ -9,10 +9,10 @@ function Project() {
       description: "A gamified productivity platform with a unique sketchbook aesthetic, designed to keep users engaged through interactive features.",
       problem: "Traditional study tools often lack engagement and feel monotonous. StudySync introduces gamification and interactive elements to make learning a more enjoyable and rewarding experience.",
       features: [
-        "LiveKit-integrated study rooms with animated progress bars and interactive task cards.",
-        "Progressive RPG Leveling system to reward consistent study habits.",
-        "Study Streaks and a dedicated Zen Mode for focused, distraction-free sessions.",
-        "Dynamic Bento Grid showcase and transparent user data security."
+        "Real-time WebRTC Infrastructure: Powered by LiveKit for seamless, low-latency video and audio streaming within interactive study rooms.",
+        "Scalable Gamification Engine: Node.js backend integrated with PostgreSQL (Neon) to handle complex state management for RPG leveling and streaks.",
+        "Component-Driven UI Architecture: React-based SPA utilizing modern design patterns for animated micro-interactions and a dynamic Bento Grid layout.",
+        "Secure Data Handling: Robust JWT authentication and efficient database querying ensuring transparent data security and high performance."
       ],
       tech: ["React", "LiveKit", "Node", "PostgreSQL", "Neon", "TailwindCSS"],
       video: "/videos/studysync.webp", 
