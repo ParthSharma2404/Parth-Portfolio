@@ -14,7 +14,7 @@ function Project() {
         "Study Streaks and a dedicated Zen Mode for focused, distraction-free sessions.",
         "Dynamic Bento Grid showcase and transparent user data security."
       ],
-      tech: ["React", "LiveKit", "Node", "MongoDB", "TailwindCSS"],
+      tech: ["React", "LiveKit", "Node", "PostgreSQL", "Neon", "TailwindCSS"],
       video: "/videos/studysync.png", 
       live: "https://studysync.fun",
       github: "#"
