@@ -515,22 +515,30 @@ function CodingStats() {
           <div className="relative z-10 overflow-x-auto pb-4 scrollbar-thin select-none">
             <div className="min-w-[760px] w-max flex flex-col mx-auto">
               {/* Months Headers Row */}
-              <div className="flex mb-2">
+              <div className="flex mb-2 h-4 items-end">
                 {/* Empty spacer matching the day labels width */}
                 <div className="w-6 shrink-0 pr-2" />
                 
                 {/* Month labels container aligned with the grid */}
-                <div className="relative flex-1 h-4 text-[9px] font-bold text-zinc-500 uppercase tracking-wider">
-                  {monthLabels.map((labelItem, index) => {
-                    const percent = (labelItem.weekIndex / 53) * 100;
+                <div className="flex gap-[3.5px] h-full items-end">
+                  {weeks.map((week, index) => {
+                    const labelItem = monthLabels.find((l) => l.weekIndex === index);
+                    const isMonthStart = index > 0 && labelItem;
                     return (
-                      <span
-                        key={index}
-                        className="absolute"
-                        style={{ left: `${percent}%` }}
-                      >
-                        {labelItem.label}
-                      </span>
+                      <div key={index} className="flex items-end h-full">
+                        {isMonthStart && (
+                          <div className="w-[1px] h-4 mx-1 shrink-0" />
+                        )}
+                        <div
+                          className="w-3.5 shrink-0 relative h-full"
+                        >
+                          {labelItem && (
+                            <span className="absolute left-0 bottom-0 whitespace-nowrap text-[9px] font-bold text-zinc-500 uppercase tracking-wider leading-none">
+                              {labelItem.label}
+                            </span>
+                          )}
+                        </div>
+                      </div>
                     );
                   })}
                 </div>
@@ -548,45 +556,56 @@ function CodingStats() {
 
                 {/* Grid columns */}
                 <div className="flex gap-[3.5px]">
-                  {weeks.map((week, weekIdx) => (
-                    <div key={weekIdx} className="flex flex-col gap-[3.5px]">
-                      {week.map((date, dayIdx) => {
-                        const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-                        const { count, platforms } = getContributionsForDate(dateStr);
-                        const colorClass = getColorClass(count);
+                  {weeks.map((week, weekIdx) => {
+                    const labelItem = monthLabels.find((l) => l.weekIndex === weekIdx);
+                    const isMonthStart = weekIdx > 0 && labelItem;
+                    return (
+                      <div key={weekIdx} className="flex items-center">
+                        {isMonthStart && (
+                          <div className="w-[1px] h-[112px] bg-zinc-800/40 mx-1 shrink-0 self-center" />
+                        )}
+                        <div
+                          className="flex flex-col gap-[3.5px]"
+                        >
+                          {week.map((date, dayIdx) => {
+                            const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+                            const { count, platforms } = getContributionsForDate(dateStr);
+                            const colorClass = getColorClass(count);
 
-                        // Platform descriptions for tooltip
-                        const tooltipPlatformLogs = [];
-                        if (platforms.leetcode) tooltipPlatformLogs.push(`${platforms.leetcode} LeetCode`);
-                        if (platforms.hackerrank) tooltipPlatformLogs.push(`${platforms.hackerrank} HackerRank`);
-                        if (platforms.geeksforgeeks) tooltipPlatformLogs.push(`${platforms.geeksforgeeks} GeeksforGeeks`);
+                            // Platform descriptions for tooltip
+                            const tooltipPlatformLogs = [];
+                            if (platforms.leetcode) tooltipPlatformLogs.push(`${platforms.leetcode} LeetCode`);
+                            if (platforms.hackerrank) tooltipPlatformLogs.push(`${platforms.hackerrank} HackerRank`);
+                            if (platforms.geeksforgeeks) tooltipPlatformLogs.push(`${platforms.geeksforgeeks} GeeksforGeeks`);
 
-                        return (
-                          <div key={dayIdx} className="relative group/cell cursor-default w-3.5 h-3.5">
-                            {/* Heatmap Cell */}
-                            <div className={`w-full h-full rounded-sm transition-all duration-300 ${colorClass}`} />
+                            return (
+                              <div key={dayIdx} className="relative group/cell cursor-default w-3.5 h-3.5">
+                                {/* Heatmap Cell */}
+                                <div className={`w-full h-full rounded-sm transition-all duration-300 ${colorClass}`} />
 
-                            {/* CSS Tooltip */}
-                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/cell:flex flex-col items-center z-30 bg-zinc-950/95 border border-zinc-800 text-[10px] p-2.5 rounded-xl shadow-2xl backdrop-blur-md pointer-events-none whitespace-nowrap gap-1">
-                              <span className="font-bold text-white">
-                                {count === 0 ? "No contributions" : `${count} contribution${count > 1 ? "s" : ""}`}
-                              </span>
-                              <span className="text-zinc-400 font-medium">{formatDateString(date)}</span>
-                              {tooltipPlatformLogs.length > 0 && (
-                                <div className="mt-1 pt-1 border-t border-zinc-800/80 flex flex-col items-start gap-0.5 text-[9px] text-zinc-500 font-bold uppercase tracking-wider">
-                                  {tooltipPlatformLogs.map((log) => (
-                                    <span key={log}>{log}</span>
-                                  ))}
+                                {/* CSS Tooltip */}
+                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/cell:flex flex-col items-center z-30 bg-zinc-950/95 border border-zinc-800 text-[10px] p-2.5 rounded-xl shadow-2xl backdrop-blur-md pointer-events-none whitespace-nowrap gap-1">
+                                  <span className="font-bold text-white">
+                                    {count === 0 ? "No contributions" : `${count} contribution${count > 1 ? "s" : ""}`}
+                                  </span>
+                                  <span className="text-zinc-400 font-medium">{formatDateString(date)}</span>
+                                  {tooltipPlatformLogs.length > 0 && (
+                                    <div className="mt-1 pt-1 border-t border-zinc-800/80 flex flex-col items-start gap-0.5 text-[9px] text-zinc-500 font-bold uppercase tracking-wider">
+                                      {tooltipPlatformLogs.map((log) => (
+                                        <span key={log}>{log}</span>
+                                      ))}
+                                    </div>
+                                  )}
+                                  {/* Arrow down */}
+                                  <div className="absolute top-full left-1/2 -translate-x-1/2 border-[4px] border-transparent border-t-zinc-800" />
                                 </div>
-                              )}
-                              {/* Arrow down */}
-                              <div className="absolute top-full left-1/2 -translate-x-1/2 border-[4px] border-transparent border-t-zinc-800" />
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  ))}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
