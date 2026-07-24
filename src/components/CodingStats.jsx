@@ -513,7 +513,7 @@ function CodingStats() {
 
           {/* Heatmap Grid Wrapper (Horizontal scrolling on mobile) */}
           <div className="relative z-10 overflow-x-auto pb-4 scrollbar-thin select-none">
-            <div className="min-w-[760px] flex flex-col">
+            <div className="min-w-[760px] w-max flex flex-col mx-auto">
               {/* Months Headers Row */}
               <div className="flex mb-2">
                 {/* Empty spacer matching the day labels width */}
