@@ -1,0 +1,89 @@
+{
+  "leetcode": {
+    "username": "parthsharma240404",
+    "fallback": {
+      "totalSolved": 135,
+      "easySolved": 87,
+      "mediumSolved": 44,
+      "hardSolved": 4,
+      "ranking": 1226584,
+      "contestRating": 1480,
+      "submissionsPastYear": 427,
+      "activeDays": 43,
+      "maxStreak": 12,
+      "calendar": {
+        "1719792000": 3,
+        "1720224000": 5,
+        "1720310400": 8,
+        "1720396800": 4,
+        "1720483200": 6,
+        "1720742400": 2,
+        "1720828800": 1,
+        "1720915200": 7,
+        "1721001600": 12,
+        "1721088000": 4,
+        "1721174400": 1,
+        "1721260800": 2,
+        "1721347200": 3,
+        "1721433600": 5,
+        "1721520000": 2,
+        "1721606400": 8,
+        "1721692800": 6,
+        "1721779200": 4
+      }
+    }
+  },
+  "hackerrank": {
+    "username": "ps4033907",
+    "badges": [
+      { "name": "C++", "stars": 5, "color": "#fbbf24" },
+      { "name": "C Language", "stars": 3, "color": "#94a3b8" },
+      { "name": "SQL", "stars": 3, "color": "#38bdf8" },
+      { "name": "Java", "stars": 2, "color": "#f97316" },
+      { "name": "Python", "stars": 2, "color": "#3b82f6" },
+      { "name": "Problem Solving", "stars": 2, "color": "#ef4444" }
+    ],
+    "certifications": [
+      { "name": "Python (Basic)", "status": "Verified", "date": "2026" }
+    ],
+    "calendar": {
+      "2026-06-15": 1,
+      "2026-06-16": 2,
+      "2026-06-18": 1,
+      "2026-07-02": 3,
+      "2026-07-03": 2,
+      "2026-07-10": 1
+    }
+  },
+  "geeksforgeeks": {
+    "username": "parthshar50tj",
+    "codingScore": 101,
+    "problemsSolved": 44,
+    "instituteRank": 9469,
+    "distribution": {
+      "school": 0,
+      "basic": 9,
+      "easy": 25,
+      "medium": 9,
+      "hard": 1
+    },
+    "calendar": {
+      "2025-11-10": 2,
+      "2025-11-11": 3,
+      "2025-11-12": 1,
+      "2025-11-13": 4,
+      "2025-11-14": 1,
+      "2025-12-01": 2,
+      "2025-12-05": 1,
+      "2025-12-06": 3,
+      "2026-02-15": 2,
+      "2026-02-18": 1,
+      "2026-02-22": 4,
+      "2026-07-01": 2,
+      "2026-07-04": 3,
+      "2026-07-12": 1,
+      "2026-07-18": 2,
+      "2026-07-20": 4
+    }
+  }
+}

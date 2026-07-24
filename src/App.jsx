@@ -6,6 +6,7 @@ import Work from "./components/Work";
 import Project from "./components/Project";
 import Contact from "./components/Contact";
 import Skills from "./components/Skills";
+import CodingStats from "./components/CodingStats";
 import Internship from "./components/Internship";
 import CursorFollower from "./components/CursorFollower";
 import MusicPlayer from "./components/MusicPlayer";
@@ -58,6 +59,9 @@ function App() {
       </div>
       <div id="skills">
         <Skills />
+      </div>
+      <div id="stats">
+        <CodingStats />
       </div>
       <div id="internship">
         <Internship />
