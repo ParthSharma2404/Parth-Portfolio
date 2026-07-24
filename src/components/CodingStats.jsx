@@ -325,6 +325,21 @@ function CodingStats() {
                   </span>
                 </div>
               </div>
+
+              {/* Profile Button */}
+              <div className="flex justify-center mt-6">
+                <a
+                  href={`https://leetcode.com/u/${staticData.leetcode.username}/`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full flex items-center justify-center bg-zinc-950/60 border border-zinc-800/80 hover:border-orange-500/40 hover:bg-orange-500/5 transition-all duration-300 group/btn shadow-md hover:scale-105"
+                  title="View LeetCode Profile"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24" className="text-zinc-400 group-hover/btn:text-orange-500 group-hover/btn:scale-110 transition-all duration-300">
+                    <path d="M13.483 0a1.374 1.374 0 0 0-.961.414l-9.77 9.77a1.375 1.375 0 0 0-.025 1.96L7.48 16.9a1.375 1.375 0 0 0 1.913-.02l9.74-9.74a1.375 1.375 0 0 0-.025-1.96L14.39.414A1.37 1.37 0 0 0 13.483 0zm-6.19 14.476L4.544 11.73l9.043-9.043 2.743 2.742-9.037 9.047zm16.522-3.86a.916.916 0 0 0-.64-.26h-4.382l4.382-4.383a.916.916 0 0 0-.64-1.564H11.77a.916.916 0 0 0-.64.26L2.086 13.714a.916.916 0 0 0 .64 1.563H19.74v4.381a.916.916 0 0 0 1.563.64l4.381-4.381a.916.916 0 0 0-.261-1.562z"/>
+                  </svg>
+                </a>
+              </div>
             </div>
           </div>
 
@@ -393,6 +408,21 @@ function CodingStats() {
                   </div>
                 ))}
               </div>
+
+              {/* Profile Button */}
+              <div className="flex justify-center mt-6">
+                <a
+                  href={`https://www.hackerrank.com/profile/${staticData.hackerrank.username}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full flex items-center justify-center bg-zinc-950/60 border border-zinc-800/80 hover:border-emerald-500/40 hover:bg-emerald-500/5 transition-all duration-300 group/btn shadow-md hover:scale-105"
+                  title="View HackerRank Profile"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24" className="text-zinc-400 group-hover/btn:text-emerald-500 group-hover/btn:scale-110 transition-all duration-300">
+                    <path d="M12.003 21.196L2.348 15.62V4.469L12.003 1.13l9.65 3.34v11.15l-9.65 5.576zm-7.652-6.73l7.652 4.417 7.656-4.42V6.26l-7.656-2.651L4.35 6.26v8.206zM8.146 11.23a.625.625 0 0 1 .624-.625h6.46a.625.625 0 0 1 .625.625v1.25a.625.625 0 0 1-.625.625h-6.46a.625.625 0 0 1-.624-.625v-1.25z" />
+                  </svg>
+                </a>
+              </div>
             </div>
           </div>
 
@@ -419,10 +449,10 @@ function CodingStats() {
                   href={`https://www.geeksforgeeks.org/profile/${staticData.geeksforgeeks.username}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-zinc-500 hover:text-white transition-colors"
+                  className="w-8 h-8 rounded-full flex items-center justify-center bg-zinc-950/50 border border-white/[0.05] text-zinc-500 hover:text-white hover:border-[#86bd22]/30 transition-all"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1.79 14.59L6.5 12.88l1.41-1.41 2.3 2.3 5.3-5.3 1.41 1.41-6.71 6.71z" />
+                    <path d="M21.45 14.315c-.143.28-.334.532-.565.745a3.691 3.691 0 0 1-1.104.695 4.51 4.51 0 0 1-3.116-.016 3.79 3.79 0 0 1-2.135-2.078 3.571 3.571 0 0 1-.13-.353h7.418a4.26 4.26 0 0 1-.368 1.008zm-1.99-.654a3.793 3.793 0 0 1-2.134 2.078 4.51 4.51 0 0 1-3.117.016 3.7 3.7 0 0 1-1.104-.695 2.652 2.652 0 0 1-.564-.745 4.221 4.221 0 0 1-.368-1.006H9.59c-.038.12-.08.238-.13.352zm14.501-1.758a3.849 3.849 0 0 0-.082-.475l-9.634-.008a3.932 3.932 0 0 1 1.143-2.348c.363-.35.79-.625 1.26-.809a3.97 3.97 0 0 1 4.484.957l1.521-1.49a5.7 5.7 0 0 0-1.922-1.357 6.283 6.283 0 0 0-2.544-.49 6.35 6.35 0 0 0-2.405.457 6.007 6.007 0 0 0-1.963 1.276 6.142 6.142 0 0 0-1.325 1.94 5.862 5.862 0 0 0-.466 1.864h-.063a5.857 5.857 0 0 0-.467-1.865 6.13 6.13 0 0 0-1.325-1.939A6 6 0 0 0 8.21 6.34a6.698 6.698 0 0 0-4.949.031A5.708 5.708 0 0 0 1.34 7.73l1.52 1.49a4.166 4.166 0 0 1 4.484-.958c.47.184.898.46 1.26.81.368.36.66.792.859 1.268.146.344.242.708.285 1.08l-9.635.008A4.714 4.714 0 0 0 0 12.457a6.493 6.493 0 0 0 .345 2.127 4.927 4.927 0 0 0 1.08 1.783c.528.56 1.17 1 1.88 1.293a6.454 6.454 0 0 0 2.504.457c.824.005 1.64-.15 2.404-.457a5.986 5.986 0 0 0 1.964-1.277 6.116 6.116 0 0 0 1.686-3.076h.273a6.13 6.13 0 0 0 1.686 3.077 5.99 5.99 0 0 0 1.964 1.276 6.345 6.345 0 0 0 2.405.457 6.45 6.45 0 0 0 2.502-.457 5.42 5.42 0 0 0 1.882-1.293 4.928 4.928 0 0 0 1.08-1.783A6.52 6.52 0 0 0 24 12.457a4.757 4.757 0 0 0-.039-.554z"/>
                   </svg>
                 </a>
               </div>
@@ -465,6 +495,21 @@ function CodingStats() {
                     Hard: {staticData.geeksforgeeks.distribution.hard}
                   </span>
                 </div>
+              </div>
+
+              {/* Profile Button */}
+              <div className="flex justify-center mt-6">
+                <a
+                  href={`https://www.geeksforgeeks.org/profile/${staticData.geeksforgeeks.username}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full flex items-center justify-center bg-zinc-950/60 border border-zinc-800/80 hover:border-accent/40 hover:bg-accent/5 transition-all duration-300 group/btn shadow-md hover:scale-105"
+                  title="View GeeksforGeeks Profile"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 24 24" className="text-zinc-400 group-hover/btn:text-accent group-hover/btn:scale-110 transition-all duration-300">
+                    <path d="M21.45 14.315c-.143.28-.334.532-.565.745a3.691 3.691 0 0 1-1.104.695 4.51 4.51 0 0 1-3.116-.016 3.79 3.79 0 0 1-2.135-2.078 3.571 3.571 0 0 1-.13-.353h7.418a4.26 4.26 0 0 1-.368 1.008zm-1.99-.654a3.793 3.793 0 0 1-2.134 2.078 4.51 4.51 0 0 1-3.117.016 3.7 3.7 0 0 1-1.104-.695 2.652 2.652 0 0 1-.564-.745 4.221 4.221 0 0 1-.368-1.006H9.59c-.038.12-.08.238-.13.352zm14.501-1.758a3.849 3.849 0 0 0-.082-.475l-9.634-.008a3.932 3.932 0 0 1 1.143-2.348c.363-.35.79-.625 1.26-.809a3.97 3.97 0 0 1 4.484.957l1.521-1.49a5.7 5.7 0 0 0-1.922-1.357 6.283 6.283 0 0 0-2.544-.49 6.35 6.35 0 0 0-2.405.457 6.007 6.007 0 0 0-1.963 1.276 6.142 6.142 0 0 0-1.325 1.94 5.862 5.862 0 0 0-.466 1.864h-.063a5.857 5.857 0 0 0-.467-1.865 6.13 6.13 0 0 0-1.325-1.939A6 6 0 0 0 8.21 6.34a6.698 6.698 0 0 0-4.949.031A5.708 5.708 0 0 0 1.34 7.73l1.52 1.49a4.166 4.166 0 0 1 4.484-.958c.47.184.898.46 1.26.81.368.36.66.792.859 1.268.146.344.242.708.285 1.08l-9.635.008A4.714 4.714 0 0 0 0 12.457a6.493 6.493 0 0 0 .345 2.127 4.927 4.927 0 0 0 1.08 1.783c.528.56 1.17 1 1.88 1.293a6.454 6.454 0 0 0 2.504.457c.824.005 1.64-.15 2.404-.457a5.986 5.986 0 0 0 1.964-1.277 6.116 6.116 0 0 0 1.686-3.076h.273a6.13 6.13 0 0 0 1.686 3.077 5.99 5.99 0 0 0 1.964 1.276 6.345 6.345 0 0 0 2.405.457 6.45 6.45 0 0 0 2.502-.457 5.42 5.42 0 0 0 1.882-1.293 4.928 4.928 0 0 0 1.08-1.783A6.52 6.52 0 0 0 24 12.457a4.757 4.757 0 0 0-.039-.554z"/>
+                  </svg>
+                </a>
               </div>
             </div>
           </div>
