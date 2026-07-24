@@ -191,10 +191,16 @@ h1, h2, h3 {
   transform-style: preserve-3d;
   perspective: 1000px;
   transition: transform 0.15s ease-out;
+  backface-visibility: hidden;
+  will-change: transform;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .tilt-content {
   transform: translateZ(20px);
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 .bg-mesh-blob {

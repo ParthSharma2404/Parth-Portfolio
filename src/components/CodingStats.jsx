@@ -498,15 +498,25 @@ function CodingStats() {
           <div className="relative z-10 overflow-x-auto pb-4 scrollbar-thin select-none">
             <div className="min-w-[760px] flex flex-col">
               {/* Months Headers Row */}
-              <div className="flex mb-2 text-[10px] font-bold text-zinc-500 uppercase tracking-widest pl-6">
-                {weeks.map((week, index) => {
-                  const labelItem = monthLabels.find((l) => l.weekIndex === index);
-                  return (
-                    <div key={index} className="w-[13px] text-center" style={{ marginRight: "3.5px" }}>
-                      {labelItem ? labelItem.label : ""}
-                    </div>
-                  );
-                })}
+              <div className="flex mb-2">
+                {/* Empty spacer matching the day labels width */}
+                <div className="w-6 shrink-0 pr-2" />
+                
+                {/* Month labels container aligned with the grid */}
+                <div className="relative flex-1 h-4 text-[9px] font-bold text-zinc-500 uppercase tracking-wider">
+                  {monthLabels.map((labelItem, index) => {
+                    const percent = (labelItem.weekIndex / 53) * 100;
+                    return (
+                      <span
+                        key={index}
+                        className="absolute"
+                        style={{ left: `${percent}%` }}
+                      >
+                        {labelItem.label}
+                      </span>
+                    );
+                  })}
+                </div>
               </div>
 
               {/* Day rows (7 rows, Sun to Sat) */}
