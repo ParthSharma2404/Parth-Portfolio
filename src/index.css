@@ -197,10 +197,15 @@ h1, h2, h3 {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.tilt-content {
-  transform: translateZ(20px);
+.tilt-card .tilt-content {
+  transform: translateZ(0px);
+  transition: transform 0.3s ease-out;
   backface-visibility: hidden;
   -webkit-font-smoothing: antialiased;
+}
+
+.tilt-card:hover .tilt-content {
+  transform: translateZ(20px);
 }
 
 .bg-mesh-blob {

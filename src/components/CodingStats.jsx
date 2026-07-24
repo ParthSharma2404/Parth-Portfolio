@@ -175,19 +175,36 @@ function CodingStats() {
   });
 
   // Calculate month labels positions
-  const monthLabels = [];
+  const rawMonthLabels = [];
   let lastMonth = -1;
   weeks.forEach((week, index) => {
     const firstDayOfWeek = week[0];
     const month = firstDayOfWeek.getMonth();
     if (month !== lastMonth) {
-      monthLabels.push({
+      rawMonthLabels.push({
         label: firstDayOfWeek.toLocaleString("en-US", { month: "short" }),
         weekIndex: index
       });
       lastMonth = month;
     }
   });
+
+  // Filter out month labels that start too close to each other to avoid visual overlap
+  const monthLabels = [];
+  for (let i = 0; i < rawMonthLabels.length; i++) {
+    const current = rawMonthLabels[i];
+    if (i === 0) {
+      const next = rawMonthLabels[i + 1];
+      if (next && next.weekIndex - current.weekIndex < 3) {
+        continue;
+      }
+    }
+    const prev = monthLabels[monthLabels.length - 1];
+    if (prev && current.weekIndex - prev.weekIndex < 3) {
+      continue;
+    }
+    monthLabels.push(current);
+  }
 
   // Calculate percentage solved helper
   const getPercentage = (solved, total) => {
@@ -222,7 +239,7 @@ function CodingStats() {
           <div
             onMouseMove={(e) => handleMouseMove(e, "tilt")}
             onMouseLeave={(e) => handleMouseLeave(e, "tilt")}
-            className="tilt-card bg-zinc-950/60 border border-white/[0.05] p-8 rounded-3xl transition-all duration-500 hover:border-orange-500/40 hover:shadow-[0_0_30px_rgba(249,115,22,0.06)] shadow-2xl reveal reveal-delay-100 flex flex-col justify-between relative overflow-hidden"
+            className="tilt-card bg-zinc-900/85 border border-zinc-800 p-8 rounded-3xl transition-all duration-500 hover:border-orange-500/40 hover:shadow-[0_0_30px_rgba(249,115,22,0.06)] shadow-2xl reveal reveal-delay-100 flex flex-col justify-between relative overflow-hidden"
           >
             {/* Ambient Glow */}
             <div className="absolute -top-10 -right-10 w-36 h-36 bg-orange-500/10 blur-[60px] rounded-full pointer-events-none" />
@@ -315,7 +332,7 @@ function CodingStats() {
           <div
             onMouseMove={(e) => handleMouseMove(e, "tilt")}
             onMouseLeave={(e) => handleMouseLeave(e, "tilt")}
-            className="tilt-card bg-zinc-950/60 border border-white/[0.05] p-8 rounded-3xl transition-all duration-300 hover:border-emerald-500/40 hover:shadow-[0_0_30px_rgba(16,185,129,0.06)] shadow-2xl reveal reveal-delay-150 flex flex-col justify-between relative overflow-hidden"
+            className="tilt-card bg-zinc-900/85 border border-zinc-800 p-8 rounded-3xl transition-all duration-300 hover:border-emerald-500/40 hover:shadow-[0_0_30px_rgba(16,185,129,0.06)] shadow-2xl reveal reveal-delay-150 flex flex-col justify-between relative overflow-hidden"
           >
             {/* Ambient Glow */}
             <div className="absolute -top-10 -right-10 w-36 h-36 bg-emerald-500/10 blur-[60px] rounded-full pointer-events-none" />
@@ -383,7 +400,7 @@ function CodingStats() {
           <div
             onMouseMove={(e) => handleMouseMove(e, "tilt")}
             onMouseLeave={(e) => handleMouseLeave(e, "tilt")}
-            className="tilt-card bg-zinc-950/60 border border-white/[0.05] p-8 rounded-3xl transition-all duration-300 hover:border-accent/40 hover:shadow-[0_0_30px_rgba(134,189,34,0.06)] shadow-2xl reveal reveal-delay-200 flex flex-col justify-between relative overflow-hidden"
+            className="tilt-card bg-zinc-900/85 border border-zinc-800 p-8 rounded-3xl transition-all duration-300 hover:border-accent/40 hover:shadow-[0_0_30px_rgba(134,189,34,0.06)] shadow-2xl reveal reveal-delay-200 flex flex-col justify-between relative overflow-hidden"
           >
             {/* Ambient Glow */}
             <div className="absolute -top-10 -right-10 w-36 h-36 bg-[#86bd22]/10 blur-[60px] rounded-full pointer-events-none" />
