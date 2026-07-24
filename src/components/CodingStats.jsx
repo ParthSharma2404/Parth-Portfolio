@@ -476,7 +476,7 @@ function CodingStats() {
           className="glow-card bg-gradient-to-b from-zinc-900/95 to-zinc-950/95 border border-zinc-800/60 p-6 md:p-8 rounded-3xl relative overflow-hidden shadow-2xl reveal reveal-delay-300"
         >
           {/* Header & Filters */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 relative z-20">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-2 relative z-20">
             <div>
               <h3 className="text-lg font-bold text-white font-display">Aggregated Activity Heatmap</h3>
               <p className="text-xs text-zinc-500 mt-1">Consolidated view of commits/submissions across platforms.</p>
@@ -513,7 +513,7 @@ function CodingStats() {
 
           {/* Heatmap Grid Wrapper (Horizontal scrolling on mobile) */}
           <div className="relative z-10 overflow-x-auto pb-4 scrollbar-thin select-none">
-            <div className="min-w-[760px] w-max flex flex-col mx-auto">
+            <div className="min-w-[760px] w-max flex flex-col mx-auto pt-14">
               {/* Months Headers Row */}
               <div className="flex mb-2 h-4 items-end">
                 {/* Empty spacer matching the day labels width */}
