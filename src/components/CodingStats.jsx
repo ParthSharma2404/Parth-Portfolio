@@ -222,17 +222,26 @@ function CodingStats() {
           <div
             onMouseMove={(e) => handleMouseMove(e, "tilt")}
             onMouseLeave={(e) => handleMouseLeave(e, "tilt")}
-            className="tilt-card bg-gradient-to-b from-zinc-900/95 to-zinc-950/95 border border-zinc-800/80 p-6 rounded-2xl transition-all duration-300 hover:border-orange-500/40 hover:shadow-[0_0_30px_rgba(249,115,22,0.06)] shadow-xl reveal reveal-delay-100 flex flex-col justify-between"
+            className="tilt-card bg-zinc-950/60 border border-white/[0.05] p-8 rounded-3xl transition-all duration-500 hover:border-orange-500/40 hover:shadow-[0_0_30px_rgba(249,115,22,0.06)] shadow-2xl reveal reveal-delay-100 flex flex-col justify-between relative overflow-hidden"
           >
-            <div className="tilt-content">
+            {/* Ambient Glow */}
+            <div className="absolute -top-10 -right-10 w-36 h-36 bg-orange-500/10 blur-[60px] rounded-full pointer-events-none" />
+
+            <div className="tilt-content relative z-10">
               {/* Card Header */}
-              <div className="flex justify-between items-center mb-6">
-                <span className="text-xs font-bold uppercase tracking-wider text-orange-400">LeetCode</span>
+              <div className="flex justify-between items-center pb-4 mb-6 border-b border-white/[0.05]">
+                <div className="flex items-center gap-2.5">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+                  </span>
+                  <span className="text-xs font-bold uppercase tracking-wider text-orange-400 font-display">LeetCode</span>
+                </div>
                 <a
                   href={`https://leetcode.com/u/${staticData.leetcode.username}/`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-zinc-500 hover:text-orange-400 transition-colors"
+                  className="text-zinc-500 hover:text-white transition-colors"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M13.483 0a1.374 1.374 0 0 0-.961.414l-9.77 9.77a1.375 1.375 0 0 0-.025 1.96L7.48 16.9a1.375 1.375 0 0 0 1.913-.02l9.74-9.74a1.375 1.375 0 0 0-.025-1.96L14.39.414A1.37 1.37 0 0 0 13.483 0zm-6.19 14.476L4.544 11.73l9.043-9.043 2.743 2.742-9.037 9.047zm16.522-3.86a.916.916 0 0 0-.64-.26h-4.382l4.382-4.383a.916.916 0 0 0-.64-1.564H11.77a.916.916 0 0 0-.64.26L2.086 13.714a.916.916 0 0 0 .64 1.563H19.74v4.381a.916.916 0 0 0 1.563.64l4.381-4.381a.916.916 0 0 0-.261-1.562z"/>
@@ -240,68 +249,61 @@ function CodingStats() {
                 </a>
               </div>
 
-              {/* Solved Stats Ring */}
-              <div className="flex items-center gap-6 mb-6">
-                <div className="relative w-24 h-24 flex items-center justify-center">
+              {/* Solved Stats Ring & Capsules */}
+              <div className="flex flex-col sm:flex-row items-center gap-6 mb-6">
+                {/* Circular Gauge */}
+                <div className="relative w-28 h-28 flex items-center justify-center shrink-0">
                   <svg className="w-full h-full -rotate-90">
-                    {/* Background circle */}
-                    <circle cx="48" cy="48" r="40" stroke="#27272a" strokeWidth="6" fill="transparent" />
-                    {/* Solved percentage circle */}
+                    <circle cx="56" cy="56" r="46" stroke="rgba(255,255,255,0.03)" strokeWidth="7" fill="transparent" />
                     <circle
-                      cx="48"
-                      cy="48"
-                      r="40"
-                      stroke="#fb923c"
-                      strokeWidth="6"
+                      cx="56"
+                      cy="56"
+                      r="46"
+                      stroke="#f97316"
+                      strokeWidth="7"
                       fill="transparent"
-                      strokeDasharray={`${2 * Math.PI * 40}`}
-                      strokeDashoffset={`${2 * Math.PI * 40 * (1 - getPercentage(activeLcStats.totalSolved, 3999) / 100)}`}
+                      strokeDasharray={`${2 * Math.PI * 46}`}
+                      strokeDashoffset={`${2 * Math.PI * 46 * (1 - getPercentage(activeLcStats.totalSolved, 3999) / 100)}`}
                       strokeLinecap="round"
                     />
                   </svg>
                   <div className="absolute flex flex-col items-center justify-center">
-                    <span className="text-xl font-bold font-display text-white">{activeLcStats.totalSolved}</span>
-                    <span className="text-[10px] text-zinc-500 font-semibold uppercase">Solved</span>
+                    <span className="text-3xl font-extrabold font-display bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">{activeLcStats.totalSolved}</span>
+                    <span className="text-[9px] text-zinc-500 font-bold uppercase tracking-wider mt-0.5">Solved</span>
                   </div>
                 </div>
 
-                {/* Substats */}
-                <div className="flex-1 space-y-2">
-                  <div className="flex justify-between items-center text-xs">
-                    <span className="text-zinc-400 font-medium">Easy</span>
-                    <span className="text-white font-bold">{activeLcStats.easySolved}<span className="text-zinc-600">/{activeLcStats.totalEasy}</span></span>
-                  </div>
-                  <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
-                    <div className="h-full bg-emerald-500 rounded-full" style={{ width: `${getPercentage(activeLcStats.easySolved, activeLcStats.totalEasy)}%` }} />
+                {/* Substats Capsules */}
+                <div className="flex-1 w-full space-y-2.5">
+                  <div className="bg-zinc-950/40 border border-white/[0.03] p-2.5 px-3.5 rounded-2xl flex items-center gap-3">
+                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981]" />
+                    <span className="text-xs text-zinc-400 font-semibold">Easy</span>
+                    <span className="ml-auto text-xs font-bold text-white">{activeLcStats.easySolved}<span className="text-zinc-600 font-normal">/{activeLcStats.totalEasy}</span></span>
                   </div>
 
-                  <div className="flex justify-between items-center text-xs">
-                    <span className="text-zinc-400 font-medium">Medium</span>
-                    <span className="text-white font-bold">{activeLcStats.mediumSolved}<span className="text-zinc-600">/{activeLcStats.totalMedium}</span></span>
-                  </div>
-                  <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
-                    <div className="h-full bg-orange-400 rounded-full" style={{ width: `${getPercentage(activeLcStats.mediumSolved, activeLcStats.totalMedium)}%` }} />
+                  <div className="bg-zinc-950/40 border border-white/[0.03] p-2.5 px-3.5 rounded-2xl flex items-center gap-3">
+                    <div className="w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_8px_#f59e0b]" />
+                    <span className="text-xs text-zinc-400 font-semibold">Medium</span>
+                    <span className="ml-auto text-xs font-bold text-white">{activeLcStats.mediumSolved}<span className="text-zinc-600 font-normal">/{activeLcStats.totalMedium}</span></span>
                   </div>
 
-                  <div className="flex justify-between items-center text-xs">
-                    <span className="text-zinc-400 font-medium">Hard</span>
-                    <span className="text-white font-bold">{activeLcStats.hardSolved}<span className="text-zinc-600">/{activeLcStats.totalHard}</span></span>
-                  </div>
-                  <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
-                    <div className="h-full bg-red-500 rounded-full" style={{ width: `${getPercentage(activeLcStats.hardSolved, activeLcStats.totalHard)}%` }} />
+                  <div className="bg-zinc-950/40 border border-white/[0.03] p-2.5 px-3.5 rounded-2xl flex items-center gap-3">
+                    <div className="w-1.5 h-1.5 rounded-full bg-rose-500 shadow-[0_0_8px_#f43f5e]" />
+                    <span className="text-xs text-zinc-400 font-semibold">Hard</span>
+                    <span className="ml-auto text-xs font-bold text-white">{activeLcStats.hardSolved}<span className="text-zinc-600 font-normal">/{activeLcStats.totalHard}</span></span>
                   </div>
                 </div>
               </div>
 
               {/* Platform Meta Info */}
-              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-zinc-800/60 text-xs">
+              <div className="grid grid-cols-2 gap-4 pt-5 border-t border-white/[0.05] text-xs">
                 <div>
-                  <span className="text-zinc-500 block font-medium uppercase tracking-wider text-[10px]">Contest Rating</span>
-                  <span className="text-white font-bold text-sm mt-0.5 block">{activeLcStats.contestRating || 1480}</span>
+                  <span className="text-zinc-500 block font-bold uppercase tracking-wider text-[9px]">Contest Rating</span>
+                  <span className="text-white font-extrabold text-sm mt-1 block">{activeLcStats.contestRating || 1480}</span>
                 </div>
                 <div>
-                  <span className="text-zinc-500 block font-medium uppercase tracking-wider text-[10px]">Global Rank</span>
-                  <span className="text-white font-bold text-sm mt-0.5 block">
+                  <span className="text-zinc-500 block font-bold uppercase tracking-wider text-[9px]">Global Rank</span>
+                  <span className="text-white font-extrabold text-sm mt-1 block">
                     {loading ? "..." : activeLcStats.ranking.toLocaleString()}
                   </span>
                 </div>
@@ -313,17 +315,26 @@ function CodingStats() {
           <div
             onMouseMove={(e) => handleMouseMove(e, "tilt")}
             onMouseLeave={(e) => handleMouseLeave(e, "tilt")}
-            className="tilt-card bg-gradient-to-b from-zinc-900/95 to-zinc-950/95 border border-zinc-800/80 p-6 rounded-2xl transition-all duration-300 hover:border-emerald-500/40 hover:shadow-[0_0_30px_rgba(16,185,129,0.06)] shadow-xl reveal reveal-delay-150 flex flex-col justify-between"
+            className="tilt-card bg-zinc-950/60 border border-white/[0.05] p-8 rounded-3xl transition-all duration-300 hover:border-emerald-500/40 hover:shadow-[0_0_30px_rgba(16,185,129,0.06)] shadow-2xl reveal reveal-delay-150 flex flex-col justify-between relative overflow-hidden"
           >
-            <div className="tilt-content">
+            {/* Ambient Glow */}
+            <div className="absolute -top-10 -right-10 w-36 h-36 bg-emerald-500/10 blur-[60px] rounded-full pointer-events-none" />
+
+            <div className="tilt-content relative z-10">
               {/* Card Header */}
-              <div className="flex justify-between items-center mb-5">
-                <span className="text-xs font-bold uppercase tracking-wider text-green-400">HackerRank</span>
+              <div className="flex justify-between items-center pb-4 mb-6 border-b border-white/[0.05]">
+                <div className="flex items-center gap-2.5">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  </span>
+                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 font-display">HackerRank</span>
+                </div>
                 <a
                   href={`https://www.hackerrank.com/profile/${staticData.hackerrank.username}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-zinc-500 hover:text-green-400 transition-colors"
+                  className="text-zinc-500 hover:text-white transition-colors"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12.003 21.196L2.348 15.62V4.469L12.003 1.13l9.65 3.34v11.15l-9.65 5.576zm-7.652-6.73l7.652 4.417 7.656-4.42V6.26l-7.656-2.651L4.35 6.26v8.206zM8.146 11.23a.625.625 0 0 1 .624-.625h6.46a.625.625 0 0 1 .625.625v1.25a.625.625 0 0 1-.625.625h-6.46a.625.625 0 0 1-.624-.625v-1.25z" />
@@ -331,32 +342,33 @@ function CodingStats() {
                 </a>
               </div>
 
-              <h4 className="text-zinc-400 text-xs font-semibold uppercase tracking-wider mb-3">Earned Badges</h4>
+              <h4 className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider mb-4">Earned Badges</h4>
+              
               {/* Badges Grid */}
               <div className="grid grid-cols-3 gap-3 mb-6">
                 {staticData.hackerrank.badges.map((badge) => (
                   <div
                     key={badge.name}
-                    className="flex flex-col items-center justify-center p-2 rounded-xl bg-zinc-900/50 border border-zinc-800/80 group/badge hover:bg-zinc-800/50 transition-colors"
+                    className="flex flex-col items-center justify-center p-3 rounded-2xl bg-zinc-950/40 border border-white/[0.03] group/badge hover:bg-zinc-950/70 hover:border-white/10 transition-all duration-300"
                   >
-                    <span className="text-[10px] font-bold text-zinc-300 text-center truncate w-full group-hover/badge:text-white transition-colors">
+                    <span className="text-[9px] font-bold text-zinc-400 text-center truncate w-full group-hover/badge:text-white transition-colors">
                       {badge.name}
                     </span>
-                    <span className="text-[11px] font-semibold mt-1" style={{ color: badge.color }}>
+                    <span className="text-[10px] font-bold mt-1.5 tracking-widest text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.6)] select-none">
                       {"★".repeat(badge.stars)}
                     </span>
                   </div>
                 ))}
               </div>
 
-              {/* Certifications & Streaks */}
-              <div className="pt-4 border-t border-zinc-800/60">
-                <span className="text-zinc-500 block font-medium uppercase tracking-wider text-[10px] mb-2">Verified Certifications</span>
+              {/* Certifications */}
+              <div className="pt-5 border-t border-white/[0.05]">
+                <span className="text-zinc-500 block font-bold uppercase tracking-wider text-[9px] mb-3">Verified Credentials</span>
                 {staticData.hackerrank.certifications.map((cert) => (
-                  <div key={cert.name} className="flex justify-between items-center text-xs">
-                    <span className="text-zinc-200 font-medium">{cert.name}</span>
-                    <span className="flex items-center gap-1 text-emerald-400 font-bold text-[10px] tracking-wider uppercase bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <div key={cert.name} className="flex justify-between items-center bg-zinc-950/40 border border-white/[0.03] p-3 px-4 rounded-2xl">
+                    <span className="text-zinc-200 text-xs font-semibold">{cert.name}</span>
+                    <span className="flex items-center gap-1.5 text-emerald-400 font-extrabold text-[9px] tracking-wider uppercase bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="20 6 9 17 4 12"></polyline>
                       </svg>
                       {cert.status}
@@ -371,17 +383,26 @@ function CodingStats() {
           <div
             onMouseMove={(e) => handleMouseMove(e, "tilt")}
             onMouseLeave={(e) => handleMouseLeave(e, "tilt")}
-            className="tilt-card bg-gradient-to-b from-zinc-900/95 to-zinc-950/95 border border-zinc-800/80 p-6 rounded-2xl transition-all duration-300 hover:border-accent/40 hover:shadow-[0_0_30px_rgba(134,189,34,0.06)] shadow-xl reveal reveal-delay-200 flex flex-col justify-between"
+            className="tilt-card bg-zinc-950/60 border border-white/[0.05] p-8 rounded-3xl transition-all duration-300 hover:border-accent/40 hover:shadow-[0_0_30px_rgba(134,189,34,0.06)] shadow-2xl reveal reveal-delay-200 flex flex-col justify-between relative overflow-hidden"
           >
-            <div className="tilt-content">
+            {/* Ambient Glow */}
+            <div className="absolute -top-10 -right-10 w-36 h-36 bg-[#86bd22]/10 blur-[60px] rounded-full pointer-events-none" />
+
+            <div className="tilt-content relative z-10">
               {/* Card Header */}
-              <div className="flex justify-between items-center mb-6">
-                <span className="text-xs font-bold uppercase tracking-wider text-emerald-500">GeeksforGeeks</span>
+              <div className="flex justify-between items-center pb-4 mb-6 border-b border-white/[0.05]">
+                <div className="flex items-center gap-2.5">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#86bd22] opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#86bd22]"></span>
+                  </span>
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#86bd22] font-display">GeeksforGeeks</span>
+                </div>
                 <a
                   href={`https://www.geeksforgeeks.org/profile/${staticData.geeksforgeeks.username}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-zinc-500 hover:text-emerald-500 transition-colors"
+                  className="text-zinc-500 hover:text-white transition-colors"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1.79 14.59L6.5 12.88l1.41-1.41 2.3 2.3 5.3-5.3 1.41 1.41-6.71 6.71z" />
@@ -389,33 +410,43 @@ function CodingStats() {
                 </a>
               </div>
 
-              {/* Big GFG Stats */}
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="bg-zinc-900/40 p-4 rounded-xl border border-zinc-800/80">
+              {/* Big GFG Stats Bento Grid */}
+              <div className="grid grid-cols-2 gap-4 mb-5">
+                <div className="bg-zinc-950/40 p-4 rounded-2xl border border-white/[0.03]">
                   <span className="text-zinc-500 block text-[9px] font-bold uppercase tracking-wider">Coding Score</span>
-                  <span className="text-2xl font-bold font-display text-white mt-1 block">
+                  <span className="text-3xl font-extrabold font-display bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent mt-1 block">
                     {staticData.geeksforgeeks.codingScore}
                   </span>
                 </div>
-                <div className="bg-zinc-900/40 p-4 rounded-xl border border-zinc-800/80">
-                  <span className="text-zinc-500 block text-[9px] font-bold uppercase tracking-wider">Problems Solved</span>
-                  <span className="text-2xl font-bold font-display text-emerald-400 mt-1 block">
+                <div className="bg-zinc-950/40 p-4 rounded-2xl border border-white/[0.03]">
+                  <span className="text-zinc-500 block text-[9px] font-bold uppercase tracking-wider">Solved</span>
+                  <span className="text-3xl font-extrabold font-display bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent mt-1 block">
                     {staticData.geeksforgeeks.problemsSolved}
                   </span>
                 </div>
               </div>
 
               {/* GFG Rank / Breakdown */}
-              <div className="pt-4 border-t border-zinc-800/60 text-xs space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-zinc-400 font-medium">LPU Institute Rank</span>
-                  <span className="text-white font-bold">#{staticData.geeksforgeeks.instituteRank}</span>
+              <div className="pt-5 border-t border-white/[0.05] space-y-4">
+                <div className="flex justify-between items-center bg-zinc-950/40 border border-white/[0.03] p-3.5 px-4 rounded-2xl text-xs">
+                  <span className="text-zinc-400 font-semibold">Institute Rank</span>
+                  <span className="text-white font-extrabold">#{staticData.geeksforgeeks.instituteRank}</span>
                 </div>
-                <div className="flex justify-between items-center text-[10px] text-zinc-500 uppercase font-bold tracking-wider">
-                  <span>Basic: {staticData.geeksforgeeks.distribution.basic}</span>
-                  <span>Easy: {staticData.geeksforgeeks.distribution.easy}</span>
-                  <span>Med: {staticData.geeksforgeeks.distribution.medium}</span>
-                  <span>Hard: {staticData.geeksforgeeks.distribution.hard}</span>
+                
+                {/* Distribution Pills */}
+                <div className="flex flex-wrap gap-2 justify-center">
+                  <span className="bg-zinc-950/60 border border-white/[0.02] px-2.5 py-1 rounded-full text-[9px] text-zinc-400 font-bold uppercase select-none">
+                    Basic: {staticData.geeksforgeeks.distribution.basic}
+                  </span>
+                  <span className="bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full text-[9px] text-emerald-400 font-bold uppercase select-none">
+                    Easy: {staticData.geeksforgeeks.distribution.easy}
+                  </span>
+                  <span className="bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full text-[9px] text-amber-400 font-bold uppercase select-none">
+                    Med: {staticData.geeksforgeeks.distribution.medium}
+                  </span>
+                  <span className="bg-rose-500/10 border border-rose-500/20 px-2.5 py-1 rounded-full text-[9px] text-rose-400 font-bold uppercase select-none">
+                    Hard: {staticData.geeksforgeeks.distribution.hard}
+                  </span>
                 </div>
               </div>
             </div>
