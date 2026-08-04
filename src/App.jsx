@@ -1,15 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Suspense, lazy } from "react";
 import NavigationBar from "./components/Navigation_bar";
 import Hero from "./components/Hero";
-import About from "./components/About";
-import Work from "./components/Work";
-import Project from "./components/Project";
-import Contact from "./components/Contact";
-import Skills from "./components/Skills";
-import CodingStats from "./components/CodingStats";
-import Internship from "./components/Internship";
 import CursorFollower from "./components/CursorFollower";
 import MusicPlayer from "./components/MusicPlayer";
+
+const About = lazy(() => import("./components/About"));
+const Work = lazy(() => import("./components/Work"));
+const Project = lazy(() => import("./components/Project"));
+const Contact = lazy(() => import("./components/Contact"));
+const Skills = lazy(() => import("./components/Skills"));
+const CodingStats = lazy(() => import("./components/CodingStats"));
+const Internship = lazy(() => import("./components/Internship"));
 
 
 import './App.css'
@@ -54,27 +55,29 @@ function App() {
       <div id="hero">
         <Hero />
       </div>
-      <div id="about">
-        <About />
-      </div>
-      <div id="skills">
-        <Skills />
-      </div>
-      <div id="stats">
-        <CodingStats />
-      </div>
-      <div id="internship">
-        <Internship />
-      </div>
-      <div id="work">
-        <Work />
-      </div>
-      <div id="projects">
-        <Project />
-      </div>
-      <div id="contact">
-        <Contact />
-      </div>
+      <Suspense fallback={<div className="h-screen flex items-center justify-center text-zinc-700 animate-pulse">Loading section...</div>}>
+        <div id="about">
+          <About />
+        </div>
+        <div id="skills">
+          <Skills />
+        </div>
+        <div id="stats">
+          <CodingStats />
+        </div>
+        <div id="internship">
+          <Internship />
+        </div>
+        <div id="work">
+          <Work />
+        </div>
+        <div id="projects">
+          <Project />
+        </div>
+        <div id="contact">
+          <Contact />
+        </div>
+      </Suspense>
     </main>
   );
 }

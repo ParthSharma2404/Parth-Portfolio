@@ -151,26 +151,26 @@ function Project() {
                       <img 
                         src={project.video} 
                         alt={project.title}
-                        className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out"
+                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out"
                       />
                     ) : (
                       <BackgroundVideo 
                         src={project.video} 
-                        className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out"
+                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out"
                       />
                     )}
                   </div>
                 ) : (
-                  <div className="absolute inset-0 w-full h-full z-0 bg-gradient-to-br from-zinc-800/50 to-zinc-950 flex items-center justify-center opacity-50 group-hover:opacity-100 transition-opacity duration-700">
+                  <div className="absolute inset-0 w-full h-full z-0 bg-gradient-to-br from-zinc-800/30 to-zinc-950 flex items-center justify-center opacity-70 group-hover:opacity-100 transition-opacity duration-700">
                     <svg className="w-32 h-32 text-zinc-800 transform group-hover:scale-110 transition-transform duration-700 ease-out" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                     </svg>
                   </div>
                 )}
 
-                {/* Heavy Gradient Overlay for Text Readability */}
-                <div className="absolute inset-0 z-10 bg-gradient-to-t from-zinc-950 via-zinc-950/80 to-transparent group-hover:via-zinc-950/60 transition-colors duration-500" />
-                <div className="absolute inset-0 z-10 bg-gradient-to-r from-zinc-950 via-zinc-950/40 to-transparent opacity-80" />
+                {/* Soft Gradient Overlay for Text Readability */}
+                <div className="absolute inset-0 z-10 bg-gradient-to-t from-zinc-950/90 via-zinc-950/30 to-transparent transition-colors duration-500" />
+                <div className="absolute inset-0 z-10 bg-gradient-to-r from-zinc-950/80 via-transparent to-transparent pointer-events-none" />
 
                 {/* Content */}
                 <div className="absolute inset-0 z-20 flex flex-col justify-end p-8 md:p-12">
