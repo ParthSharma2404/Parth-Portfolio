@@ -19,6 +19,13 @@ const skills = [
   { name: "GitHub", slug: "github" },
   { name: "Firebase", slug: "firebase" },
   { name: "Netlify", slug: "netlify" },
+  { name: "Vercel", slug: "vercel" },
+  { name: "PostgreSQL", slug: "postgresql" },
+  { name: "Socket.io", slug: "socketdotio" },
+  { name: "Kotlin", slug: "kotlin" },
+  { name: "PHP", slug: "php" },
+  { name: "Postman", slug: "postman" },
+  { name: "WebRTC", slug: "webrtc" },
 ];
 
 const SkillIcon = ({ slug, name, index, url }) => {
