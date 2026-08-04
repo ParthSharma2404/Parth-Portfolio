@@ -1,7 +1,7 @@
-import { useRef } from "react";
+import { useState } from "react";
 
 function About() {
-  const containerRef = useRef(null);
+  const [activeTab, setActiveTab] = useState("about.md");
 
   const focusAreas = [
     { title: "DSA", description: "Problem solving and algorithmic thinking." },
@@ -19,119 +19,156 @@ function About() {
     { name: "5 Star C++ Rating", issuer: "HackerRank", link: "https://www.hackerrank.com/profile/ps4033907" }
   ];
 
-  const handleMouseMove = (e, type) => {
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    if (type === 'glow') {
-      card.style.setProperty("--mouse-x", `${x}px`);
-      card.style.setProperty("--mouse-y", `${y}px`);
-    } else if (type === 'tilt') {
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const rotateX = (y - centerY) / 10;
-      const rotateY = (centerX - x) / 10;
-      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-    }
-  };
-
-  const handleMouseLeave = (e, type) => {
-    if (type === 'tilt') {
-      e.currentTarget.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
-    }
-  };
-
   return (
-    <section className="relative min-h-screen max-w-6xl mx-auto px-6 py-24 flex flex-col justify-center overflow-hidden" id="about" ref={containerRef}>
+    <section className="relative min-h-screen max-w-5xl mx-auto px-6 py-24 flex flex-col justify-center overflow-hidden" id="about">
       
       {/* Decorative Blobs */}
       <div className="bg-mesh-blob w-[400px] h-[400px] bg-accent/10 top-[-10%] left-[-10%] animate-pulse" />
       <div className="bg-mesh-blob w-[300px] h-[300px] bg-white/5 bottom-[10%] right-[-5%] animate-pulse" style={{ animationDelay: '1s' }} />
 
       {/* Heading */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 relative z-10">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12 relative z-10">
         <h2 className="text-4xl md:text-5xl font-display font-bold text-white tracking-tight">
           About Me<span className="text-accent">.</span>
         </h2>
         <div className="hidden md:block h-px flex-1 bg-zinc-800 mx-8 mb-4"></div>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-16 items-start relative z-10">
+      {/* Interactive IDE Window */}
+      <div className="w-full rounded-xl bg-[#0d1117] border border-zinc-800 shadow-2xl shadow-black/50 overflow-hidden flex flex-col relative z-10 reveal">
         
-        {/* Intro & Focus */}
-        <div className="space-y-12">
-          <div className="space-y-6 reveal">
-            <p className="text-xl text-zinc-300 leading-relaxed font-medium">
-              My journey in development started with curiosity about how software works behind the scenes.
-            </p>
-            <p className="text-lg text-zinc-400 leading-relaxed">
-              Today, that curiosity has evolved into building <span className="text-white font-semibold italic">full-stack applications</span>, 
-              <span className="text-white font-semibold italic"> AI-driven tools</span>, and 
-              <span className="text-white font-semibold italic"> real-world products</span>. 
-              I enjoy turning complex ideas into scalable digital solutions using modern technologies.
-            </p>
+        {/* macOS Header */}
+        <div className="h-12 bg-[#161b22] border-b border-zinc-800 flex items-center px-4 gap-2 relative select-none">
+          <div className="flex gap-2">
+            <div className="w-3.5 h-3.5 rounded-full bg-[#ff5f56] hover:bg-[#ff5f56]/80 cursor-pointer" />
+            <div className="w-3.5 h-3.5 rounded-full bg-[#ffbd2e] hover:bg-[#ffbd2e]/80 cursor-pointer" />
+            <div className="w-3.5 h-3.5 rounded-full bg-[#27c93f] hover:bg-[#27c93f]/80 cursor-pointer" />
+          </div>
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <span className="text-zinc-400 text-xs font-mono font-medium tracking-wider">parth-sharma — portfolio-ide</span>
+          </div>
+        </div>
+
+        {/* IDE Body */}
+        <div className="flex flex-col md:flex-row min-h-[500px]">
+          
+          {/* Sidebar */}
+          <div className="w-full md:w-56 bg-[#161b22] border-r border-zinc-800 flex flex-col p-4 gap-1 select-none">
+             <span className="text-[10px] font-mono text-zinc-500 mb-3 uppercase tracking-widest font-bold px-2">Explorer</span>
+             
+             {["about.md", "focus.json", "certifications.yml"].map(tab => (
+               <button 
+                 key={tab}
+                 onClick={() => setActiveTab(tab)}
+                 className={`text-left px-3 py-2 rounded-lg font-mono text-sm transition-all duration-200 flex items-center gap-3
+                   ${activeTab === tab 
+                     ? 'bg-[#0d1117] text-accent border border-zinc-800/50' 
+                     : 'text-zinc-400 hover:bg-zinc-800/30 hover:text-zinc-200 border border-transparent'}`}
+               >
+                 <span className="text-lg">
+                   {tab.endsWith('.md') ? '📝' : tab.endsWith('.json') ? '📋' : '📑'}
+                 </span>
+                 {tab}
+               </button>
+             ))}
           </div>
 
-          <div className="reveal">
-            <h3 className="text-sm font-display font-bold text-zinc-500 uppercase tracking-widest mb-6 border-l-2 border-accent pl-4">
-              Current Focus
-            </h3>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {focusAreas.map((area, index) => (
-                <div 
-                  key={area.title}
-                  onMouseMove={(e) => handleMouseMove(e, 'tilt')}
-                  onMouseLeave={(e) => handleMouseLeave(e, 'tilt')}
-                  className="tilt-card bg-zinc-900/40 border border-zinc-800/80 p-5 rounded-2xl hover:border-accent/40 transition-colors group cursor-default shadow-xl shadow-black/20"
-                >
-                  <div className="tilt-content">
-                    <h4 className="text-white font-bold mb-1 group-hover:text-accent transition-colors">{area.title}</h4>
-                    <p className="text-zinc-500 text-sm leading-snug">{area.description}</p>
-                  </div>
-                </div>
+          {/* Editor Area */}
+          <div className="flex-1 p-6 md:p-10 bg-[#0d1117] font-mono text-sm md:text-[15px] leading-relaxed overflow-x-auto relative">
+            
+            {/* Line Numbers Decoration */}
+            <div className="hidden md:flex flex-col text-zinc-700 absolute left-4 top-10 select-none text-right w-6">
+              {[...Array(15)].map((_, i) => (
+                <span key={i}>{i + 1}</span>
               ))}
             </div>
-          </div>
-        </div>
 
-        {/* Certificates */}
-        <div className="reveal reveal-delay-200">
-          <h3 className="text-sm font-display font-bold text-zinc-500 uppercase tracking-widest mb-6 border-l-2 border-accent pl-4">
-            Certifications
-          </h3>
-          <div className="space-y-3">
-            {certificates.map((cert) => (
-              <a 
-                key={cert.name}
-                href={cert.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                onMouseMove={(e) => handleMouseMove(e, 'glow')}
-                className="glow-card group flex flex-col p-4 rounded-2xl bg-zinc-900/30 border border-zinc-800/50 hover:bg-zinc-800/30 hover:border-accent/30 transition-all shadow-lg"
-              >
-                <div className="flex items-center justify-between gap-4 relative z-10">
-                  <span className="text-zinc-200 font-medium group-hover:text-white transition-colors">
-                    {cert.name}
-                  </span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-zinc-600 group-hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all">
-                    <line x1="7" y1="17" x2="17" y2="7"></line>
-                    <polyline points="7 7 17 7 17 17"></polyline>
-                  </svg>
+            <div className="md:pl-8">
+              {/* Render about.md */}
+              {activeTab === 'about.md' && (
+                <div className="text-zinc-300 space-y-6 animate-fade-in">
+                  <p>
+                    <span className="text-blue-400">#</span> <span className="font-bold text-white text-2xl tracking-tight">Hello, World!</span>
+                  </p>
+                  <p className="text-zinc-400">
+                    My journey in development started with curiosity about how software works behind the scenes.
+                  </p>
+                  <p className="text-zinc-400">
+                    Today, that curiosity has evolved into building <span className="text-green-400 font-medium">full-stack applications</span>, 
+                    <span className="text-yellow-400 font-medium"> AI-driven tools</span>, and 
+                    <span className="text-purple-400 font-medium"> real-world products</span>. 
+                  </p>
+                  <p className="text-zinc-500 italic mt-8">
+                    {"/*"} I enjoy turning complex ideas into scalable digital solutions using modern technologies. {"*/"}
+                  </p>
+                  
+                  <div className="flex items-center gap-2 mt-8 text-accent animate-pulse">
+                    <span className="text-xl">█</span>
+                  </div>
                 </div>
-                <span className="text-xs text-zinc-500 font-bold uppercase tracking-wider mt-1 relative z-10">
-                  {cert.issuer}
-                </span>
-              </a>
-            ))}
+              )}
+
+              {/* Render focus.json */}
+              {activeTab === 'focus.json' && (
+                <div className="text-zinc-300 animate-fade-in">
+                  <p className="text-yellow-300">{"{"}</p>
+                  <div className="pl-4 md:pl-8 border-l border-zinc-800">
+                    <p className="text-purple-400">"current_focus"<span className="text-zinc-300">: [</span></p>
+                    <div className="pl-4 md:pl-8 border-l border-zinc-800 mt-2 mb-2 space-y-4">
+                      {focusAreas.map((area, i) => (
+                        <div key={i} className="group cursor-default hover:bg-zinc-800/30 p-2 -ml-2 rounded transition-colors">
+                          <span className="text-yellow-300">{"{"}</span>
+                          <div className="pl-4 md:pl-8">
+                            <p>
+                              <span className="text-blue-400">"title"</span>: <span className="text-green-400">"{area.title}"</span>,
+                            </p>
+                            <p>
+                              <span className="text-blue-400">"description"</span>: <span className="text-orange-300">"{area.description}"</span>
+                            </p>
+                          </div>
+                          <span className="text-yellow-300">{"}"}{i !== focusAreas.length - 1 ? ',' : ''}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-zinc-300">{"]"}</p>
+                  </div>
+                  <p className="text-yellow-300">{"}"}</p>
+                </div>
+              )}
+
+              {/* Render certifications.yml */}
+              {activeTab === 'certifications.yml' && (
+                <div className="text-zinc-300 animate-fade-in">
+                  <p className="text-zinc-500 italic mb-8"># Click the certificate names to view credentials</p>
+                  <div className="space-y-6">
+                    {certificates.map((cert, i) => (
+                      <div key={i} className="group">
+                        <p className="text-pink-400 flex items-center gap-2">
+                          - <a 
+                              href={cert.link} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="text-blue-400 font-bold hover:text-accent hover:underline decoration-accent transition-colors"
+                            >
+                              "{cert.name}"
+                            </a>
+                        </p>
+                        <div className="pl-4 md:pl-8 border-l border-zinc-800/50 mt-1 space-y-1">
+                          <p className="text-zinc-400">issuer: <span className="text-yellow-300">"{cert.issuer}"</span></p>
+                          <p className="text-zinc-400">verified: <span className="text-orange-400">true</span></p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
           </div>
         </div>
-
       </div>
-
     </section>
   );
 }
 
-export default About;
+export default About;
