@@ -14,7 +14,7 @@ function Project() {
         "Component-Driven UI Architecture: React-based SPA utilizing modern design patterns for animated micro-interactions and a dynamic Bento Grid layout.",
         "Secure Data Handling: Robust JWT authentication and efficient database querying ensuring transparent data security and high performance."
       ],
-      tech: ["React", "LiveKit", "Node", "PostgreSQL"],
+      tech: ["React.js", "Vite", "Node.js", "Express.js", "PostgreSQL", "LiveKit (WebRTC)", "Socket.io", "JWT", "Recharts"],
       video: "/videos/studysync.webp", 
       live: "https://studysync.fun",
       github: "#",
@@ -30,7 +30,7 @@ function Project() {
         "Relationship mapping between different project modules.",
         "Exportable structured reports in JSON format for development teams."
       ],
-      tech: ["Django", "Python", "Llama 3", "NLP"],
+      tech: ["Django", "MongoDB", "PyPDF2", "python-docx", "Regex", "NLP", "Llama 3 (Ollama)"],
       video: null, 
       live: "#",
       github: "https://github.com/ParthSharma2404/AI-PARSER-AND-TEST-CASE-GENERATOR",
@@ -46,7 +46,7 @@ function Project() {
         "Scalable MongoDB schema for high-performance content delivery.",
         "Responsive creator dashboard for managing profiles and engagement."
       ],
-      tech: ["React", "Node", "MongoDB", "Express"],
+      tech: ["React.js", "Node.js", "Express.js", "MongoDB", "JWT"],
       video: "/videos/blogo.webp",
       live: "https://blogo-not-your-average-blogging-bud-nine.vercel.app/",
       github: "https://github.com/ParthSharma2404/Blogo.---Not-Your-Average-Blogging-buddy-",
@@ -62,7 +62,7 @@ function Project() {
         "Scalable Architecture: MERN stack deployment handling high concurrency, validated by a live pilot with 2,243+ users.",
         "Smart Analytics: Role-based dashboards with Recharts for visual data representation and Groq AI for insights."
       ],
-      tech: ["React", "Node.js", "Socket.io", "MongoDB", "Razorpay"],
+      tech: ["React.js (Vite)", "Node.js", "Express.js", "MongoDB", "Socket.io", "Razorpay", "Groq AI", "JWT", "Recharts", "Vercel"],
       video: "/videos/universe_video.webp", 
       live: "#",
       github: "#",
@@ -78,7 +78,7 @@ function Project() {
         "Streamlined consultation booking system to capture quality leads.",
         "SEO-friendly structure optimized for local market search dominance."
       ],
-      tech: ["HTML", "TailwindCSS", "JavaScript", "PHP"],
+      tech: ["HTML5", "Tailwind CSS", "JavaScript", "PHP", "Responsive Design", "SEO"],
       video: "/videos/nits.webp",
       live: "https://nitsconstructionltd.co.uk/",
       github: "#",
