@@ -143,7 +143,8 @@ function Project() {
                       <span key={tech} className="px-3 py-1 bg-white/10 backdrop-blur-md border border-white/10 text-white text-[10px] font-bold uppercase tracking-wider rounded-full">
                         {tech}
                       </span>
-                    </div>
+                    ))}
+                  </div>
 
                   <h3 className="text-3xl md:text-5xl font-display font-bold text-white mb-4 tracking-tight group-hover:text-accent transition-colors duration-300">
                     {project.title}
