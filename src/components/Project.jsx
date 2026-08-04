@@ -63,7 +63,7 @@ function Project() {
         "Smart Analytics: Role-based dashboards with Recharts for visual data representation and Groq AI for insights."
       ],
       tech: ["React.js (Vite)", "Node.js", "Express.js", "MongoDB", "Socket.io", "Razorpay", "Groq AI", "JWT", "Recharts", "Vercel"],
-      video: "/videos/universe_video.webp", 
+      video: "/videos/universe_video.mp4", 
       live: "#",
       github: "#",
       colSpan: "md:col-span-2 lg:col-span-2",
