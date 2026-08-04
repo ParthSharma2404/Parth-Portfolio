@@ -4,6 +4,8 @@ import staticData from "../data/coding_stats.json";
 function CodingStats() {
   const [loading, setLoading] = useState(true);
   const [leetcodeData, setLeetcodeData] = useState(null);
+  const [hackerrankData, setHackerrankData] = useState(null);
+  const [gfgData, setGfgData] = useState(null);
   const [activeFilter, setActiveFilter] = useState("all");
 
   // Mouse move handlers for premium tilt and glow effects
@@ -37,44 +39,52 @@ function CodingStats() {
     // Timeout of 3.5 seconds to fallback to cached static stats if API is slow
     const fallbackTimeout = setTimeout(() => {
       if (!completed) {
-        setLeetcodeData(staticData.leetcode.fallback);
+        setLeetcodeData(prev => prev || staticData.leetcode.fallback);
+        setHackerrankData(prev => prev || staticData.hackerrank);
+        setGfgData(prev => prev || staticData.geeksforgeeks);
         setLoading(false);
-        console.warn("LeetCode API timed out. Loaded local cached fallback.");
+        console.warn("APIs timed out. Loaded local cached fallback.");
       }
     }, 3500);
 
-    fetch(`https://leetcode-api-faisalshohag.vercel.app/${staticData.leetcode.username}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch");
-        return res.json();
+    const fetchLeetcode = fetch(`https://leetcode-api-faisalshohag.vercel.app/${staticData.leetcode.username}`)
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (!data) return staticData.leetcode.fallback;
+        return {
+          totalSolved: data.totalSolved || staticData.leetcode.fallback.totalSolved,
+          easySolved: data.easySolved || staticData.leetcode.fallback.easySolved,
+          mediumSolved: data.mediumSolved || staticData.leetcode.fallback.mediumSolved,
+          hardSolved: data.hardSolved || staticData.leetcode.fallback.hardSolved,
+          totalEasy: data.totalEasy || staticData.leetcode.fallback.totalEasy,
+          totalMedium: data.totalMedium || staticData.leetcode.fallback.totalMedium,
+          totalHard: data.totalHard || staticData.leetcode.fallback.totalHard,
+          ranking: data.ranking || staticData.leetcode.fallback.ranking,
+          submissionCalendar: data.submissionCalendar || staticData.leetcode.fallback.calendar,
+          submissionsPastYear: data.totalSubmissions?.[0]?.submissions || staticData.leetcode.fallback.submissionsPastYear,
+          contestRating: staticData.leetcode.fallback.contestRating
+        };
       })
-      .then((data) => {
-        if (!completed) {
-          clearTimeout(fallbackTimeout);
-          setLeetcodeData({
-            totalSolved: data.totalSolved || staticData.leetcode.fallback.totalSolved,
-            easySolved: data.easySolved || staticData.leetcode.fallback.easySolved,
-            mediumSolved: data.mediumSolved || staticData.leetcode.fallback.mediumSolved,
-            hardSolved: data.hardSolved || staticData.leetcode.fallback.hardSolved,
-            totalEasy: data.totalEasy || staticData.leetcode.fallback.totalEasy,
-            totalMedium: data.totalMedium || staticData.leetcode.fallback.totalMedium,
-            totalHard: data.totalHard || staticData.leetcode.fallback.totalHard,
-            ranking: data.ranking || staticData.leetcode.fallback.ranking,
-            submissionCalendar: data.submissionCalendar || staticData.leetcode.fallback.calendar,
-            submissionsPastYear: data.totalSubmissions?.[0]?.submissions || staticData.leetcode.fallback.submissionsPastYear,
-            contestRating: staticData.leetcode.fallback.contestRating
-          });
-          setLoading(false);
-        }
-      })
-      .catch((err) => {
-        console.error("LeetCode API error:", err);
-        if (!completed) {
-          clearTimeout(fallbackTimeout);
-          setLeetcodeData(staticData.leetcode.fallback);
-          setLoading(false);
-        }
-      });
+      .catch(() => staticData.leetcode.fallback);
+
+    // Dynamic endpoints handled by our Vercel Serverless Functions
+    const fetchHackerRank = fetch(`/api/hackerrank?username=${staticData.hackerrank.username}`)
+      .then(res => res.ok ? res.json() : staticData.hackerrank)
+      .catch(() => staticData.hackerrank);
+
+    const fetchGFG = fetch(`/api/geeksforgeeks?username=${staticData.geeksforgeeks.username}`)
+      .then(res => res.ok ? res.json() : staticData.geeksforgeeks)
+      .catch(() => staticData.geeksforgeeks);
+
+    Promise.all([fetchLeetcode, fetchHackerRank, fetchGFG]).then(([lc, hr, gfg]) => {
+      if (!completed) {
+        clearTimeout(fallbackTimeout);
+        setLeetcodeData(lc);
+        setHackerrankData(hr);
+        setGfgData(gfg);
+        setLoading(false);
+      }
+    });
 
     return () => {
       completed = true;
@@ -113,8 +123,8 @@ function CodingStats() {
     });
   }
 
-  const hackerrankCalendar = staticData.hackerrank.calendar;
-  const gfgCalendar = staticData.geeksforgeeks.calendar;
+  const hackerrankCalendar = hackerrankData?.calendar || staticData.hackerrank.calendar;
+  const gfgCalendar = gfgData?.calendar || staticData.geeksforgeeks.calendar;
 
   // Grouped contribution checking function
   const getContributionsForDate = (dateStr) => {
@@ -212,8 +222,10 @@ function CodingStats() {
     return Math.round((solved / total) * 100);
   };
 
-  // UI display values for LeetCode stats
+  // UI display values for stats
   const activeLcStats = leetcodeData || staticData.leetcode.fallback;
+  const activeHrStats = hackerrankData || staticData.hackerrank;
+  const activeGfgStats = gfgData || staticData.geeksforgeeks;
 
   return (
     <section className="relative px-6 py-24 min-h-screen bg-zinc-950 overflow-hidden" id="stats">
@@ -377,7 +389,7 @@ function CodingStats() {
                 
                 {/* Badges Grid */}
                 <div className="grid grid-cols-3 gap-3 mb-6">
-                  {staticData.hackerrank.badges.map((badge) => (
+                  {activeHrStats.badges.map((badge) => (
                     <div
                       key={badge.name}
                       className="flex flex-col items-center justify-center p-3 rounded-2xl bg-zinc-950/40 border border-white/[0.03] group/badge hover:bg-zinc-950/70 hover:border-white/10 transition-all duration-300"
@@ -395,7 +407,7 @@ function CodingStats() {
                 {/* Certifications */}
                 <div className="pt-5 border-t border-white/[0.05]">
                   <span className="text-zinc-500 block font-bold uppercase tracking-wider text-[9px] mb-3">Verified Credentials</span>
-                  {staticData.hackerrank.certifications.map((cert) => (
+                  {activeHrStats.certifications.map((cert) => (
                     <div key={cert.name} className="flex justify-between items-center bg-zinc-950/40 border border-white/[0.03] p-3 px-4 rounded-2xl">
                       <span className="text-zinc-200 text-xs font-semibold">{cert.name}</span>
                       <span className="flex items-center gap-1.5 text-emerald-400 font-extrabold text-[9px] tracking-wider uppercase bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
@@ -461,13 +473,13 @@ function CodingStats() {
                   <div className="bg-zinc-950/40 p-4 rounded-2xl border border-white/[0.03]">
                     <span className="text-zinc-500 block text-[9px] font-bold uppercase tracking-wider">Coding Score</span>
                     <span className="text-3xl font-extrabold font-display bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent mt-1 block">
-                      {staticData.geeksforgeeks.codingScore}
+                      {activeGfgStats.codingScore}
                     </span>
                   </div>
                   <div className="bg-zinc-950/40 p-4 rounded-2xl border border-white/[0.03]">
                     <span className="text-zinc-500 block text-[9px] font-bold uppercase tracking-wider">Solved</span>
                     <span className="text-3xl font-extrabold font-display bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent mt-1 block">
-                      {staticData.geeksforgeeks.problemsSolved}
+                      {activeGfgStats.problemsSolved}
                     </span>
                   </div>
                 </div>
@@ -476,22 +488,22 @@ function CodingStats() {
                 <div className="pt-5 border-t border-white/[0.05] space-y-4">
                   <div className="flex justify-between items-center bg-zinc-950/40 border border-white/[0.03] p-3.5 px-4 rounded-2xl text-xs">
                     <span className="text-zinc-400 font-semibold">Institute Rank</span>
-                    <span className="text-white font-extrabold">#{staticData.geeksforgeeks.instituteRank}</span>
+                    <span className="text-white font-extrabold">#{activeGfgStats.instituteRank}</span>
                   </div>
                   
                   {/* Distribution Pills */}
                   <div className="flex flex-wrap gap-2 justify-center">
                     <span className="bg-zinc-950/60 border border-white/[0.02] px-2.5 py-1 rounded-full text-[9px] text-zinc-400 font-bold uppercase select-none">
-                      Basic: {staticData.geeksforgeeks.distribution.basic}
+                      Basic: {activeGfgStats.distribution.basic}
                     </span>
                     <span className="bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full text-[9px] text-emerald-400 font-bold uppercase select-none">
-                      Easy: {staticData.geeksforgeeks.distribution.easy}
+                      Easy: {activeGfgStats.distribution.easy}
                     </span>
                     <span className="bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full text-[9px] text-amber-400 font-bold uppercase select-none">
-                      Med: {staticData.geeksforgeeks.distribution.medium}
+                      Med: {activeGfgStats.distribution.medium}
                     </span>
                     <span className="bg-rose-500/10 border border-rose-500/20 px-2.5 py-1 rounded-full text-[9px] text-rose-400 font-bold uppercase select-none">
-                      Hard: {staticData.geeksforgeeks.distribution.hard}
+                      Hard: {activeGfgStats.distribution.hard}
                     </span>
                   </div>
                 </div>
