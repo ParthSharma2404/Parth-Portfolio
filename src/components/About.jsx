@@ -1,7 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function About() {
   const [activeTab, setActiveTab] = useState("about.md");
+  const [isInteracting, setIsInteracting] = useState(false);
+
+  // Auto-cycle tabs to show interactivity
+  useEffect(() => {
+    if (isInteracting) return;
+    
+    const tabs = ["about.md", "focus.json", "certifications.yml"];
+    const interval = setInterval(() => {
+      setActiveTab(prev => {
+        const currentIndex = tabs.indexOf(prev);
+        return tabs[(currentIndex + 1) % tabs.length];
+      });
+    }, 4000); // Change tab every 4 seconds
+
+    return () => clearInterval(interval);
+  }, [isInteracting]);
 
   const focusAreas = [
     { title: "DSA", description: "Problem solving and algorithmic thinking." },
@@ -35,7 +51,11 @@ function About() {
       </div>
 
       {/* Interactive IDE Window */}
-      <div className="w-full rounded-xl bg-[#0d1117] border border-zinc-800 shadow-2xl shadow-black/50 overflow-hidden flex flex-col relative z-10 reveal">
+      <div 
+        className="w-full rounded-xl bg-[#0d1117] border border-zinc-800 shadow-2xl shadow-black/50 overflow-hidden flex flex-col relative z-10 reveal"
+        onMouseEnter={() => setIsInteracting(true)}
+        onClick={() => setIsInteracting(true)}
+      >
         
         {/* macOS Header */}
         <div className="h-12 bg-[#161b22] border-b border-zinc-800 flex items-center px-4 gap-2 relative select-none">
@@ -59,16 +79,25 @@ function About() {
              {["about.md", "focus.json", "certifications.yml"].map(tab => (
                <button 
                  key={tab}
-                 onClick={() => setActiveTab(tab)}
-                 className={`text-left px-3 py-2 rounded-lg font-mono text-sm transition-all duration-200 flex items-center gap-3
+                 onClick={() => {
+                   setActiveTab(tab);
+                   setIsInteracting(true);
+                 }}
+                 className={`text-left px-3 py-2 rounded-lg font-mono text-sm transition-all duration-200 flex items-center justify-between group
                    ${activeTab === tab 
                      ? 'bg-[#0d1117] text-accent border border-zinc-800/50' 
                      : 'text-zinc-400 hover:bg-zinc-800/30 hover:text-zinc-200 border border-transparent'}`}
                >
-                 <span className="text-lg">
-                   {tab.endsWith('.md') ? '📝' : tab.endsWith('.json') ? '📋' : '📑'}
-                 </span>
-                 {tab}
+                 <div className="flex items-center gap-3">
+                   <span className="text-lg group-hover:scale-110 transition-transform">
+                     {tab.endsWith('.md') ? '📝' : tab.endsWith('.json') ? '📋' : '📑'}
+                   </span>
+                   {tab}
+                 </div>
+                 {/* Visual hint that it's clickable */}
+                 {activeTab !== tab && !isInteracting && (
+                   <span className="w-2 h-2 rounded-full bg-accent animate-ping opacity-75"></span>
+                 )}
                </button>
              ))}
           </div>
