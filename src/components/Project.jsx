@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 function Project() {
   const [selectedProject, setSelectedProject] = useState(null);
+  const targetRef = useRef(null);
+  const scrollContainerRef = useRef(null);
 
   const projects = [
     {
@@ -66,127 +68,225 @@ function Project() {
     }
   ];
 
-  const handleMouseMove = (e) => {
-    const card = e.currentTarget;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    card.style.setProperty("--mouse-x", `${x}px`);
-    card.style.setProperty("--mouse-y", `${y}px`);
-  };
+  // We have 1 Title Slide + 4 Project Slides = 5 Slides total
+  const totalSlides = projects.length + 1; 
+  // Max translation is based on total slides. For 5 slides, max is 80%.
+  const maxTranslate = ((totalSlides - 1) / totalSlides) * 100;
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!targetRef.current || !scrollContainerRef.current) return;
+      
+      // On mobile (lg breakpoint is 1024px), we disable horizontal scroll
+      if (window.innerWidth < 1024) {
+        scrollContainerRef.current.style.transform = `translateX(0)`;
+        return;
+      }
+
+      const { top, height } = targetRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      
+      const maxScroll = height - windowHeight;
+      let progress = -top / maxScroll;
+      progress = Math.max(0, Math.min(1, progress)); // clamp between 0 and 1
+      
+      scrollContainerRef.current.style.transform = `translateX(-${progress * maxTranslate}%)`;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+    handleScroll();
+    
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, [maxTranslate]);
 
   return (
-    <section className="relative px-6 py-24 min-h-screen bg-zinc-950 overflow-hidden" id="projects">
-      
-      {/* Background Decorative Mesh */}
-      <div className="absolute top-1/4 left-0 w-[600px] h-[600px] bg-accent/5 blur-[150px] rounded-full -z-10 animate-pulse" />
-      <div className="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-white/5 blur-[120px] rounded-full -z-10" />
-
-      <div className="max-w-6xl mx-auto relative z-10">
-        <div className="mb-20 text-center">
-          <h2 className="text-4xl md:text-5xl font-display font-bold text-white tracking-tight reveal">
-            Selected Lab Projects<span className="text-accent">.</span>
-          </h2>
-          <p className="text-zinc-500 mt-4 max-w-xl mx-auto reveal reveal-delay-100">
-            A showcase of my recent work in AI agents, full-stack applications, and performant web products.
-          </p>
-        </div>
-
-        {/* Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
-            <div
-              key={index}
-              onMouseMove={handleMouseMove}
-              className={`glow-card group bg-zinc-900/40 backdrop-blur-xl border border-zinc-800/80 p-8 rounded-[2.5rem] flex flex-col justify-between transition-all duration-300 reveal reveal-delay-${(index + 1) * 100} hover:shadow-2xl hover:shadow-accent/5 hover:-translate-y-2`}
-            >
-              <div className="relative z-10">
-                <div className="w-12 h-12 rounded-2xl bg-zinc-800/50 flex items-center justify-center mb-6 group-hover:bg-accent/10 transition-colors duration-300">
-                  <svg className="w-6 h-6 text-zinc-500 group-hover:text-accent transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                     {index === 0 ? (
-                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                     ) : index === 1 ? (
-                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l4 4v10a2 2 0 01-2 2zM14 2v4h4" />
-                     ) : (
-                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                     )}
+    <>
+      <section 
+        id="projects" 
+        ref={targetRef} 
+        className="relative bg-zinc-950 lg:h-[500vh]"
+      >
+        <div className="lg:sticky lg:top-0 lg:h-screen lg:w-full lg:overflow-hidden">
+          
+          <div 
+            ref={scrollContainerRef} 
+            className="flex flex-col lg:flex-row w-full lg:w-[500vw] lg:h-full will-change-transform"
+          >
+            
+            {/* Slide 0: Title Slide */}
+            <div className="w-full lg:w-[100vw] h-auto lg:h-full flex items-center justify-center p-6 py-24 lg:p-24 shrink-0 bg-zinc-950 border-b lg:border-b-0 border-zinc-900">
+              <div className="max-w-4xl mx-auto text-center">
+                <h2 className="text-6xl md:text-8xl font-display font-bold text-white tracking-tighter leading-tight mb-8">
+                  Selected <br className="hidden md:block"/> <span className="text-accent">Lab Projects.</span>
+                </h2>
+                <p className="text-zinc-400 text-xl md:text-2xl max-w-2xl mx-auto font-light leading-relaxed">
+                  A showcase of my recent work spanning high-performance web applications, AI integrations, and real-time collaboration platforms.
+                </p>
+                <div className="mt-16 hidden lg:flex items-center justify-center gap-4 text-zinc-600 animate-pulse">
+                  <span className="text-sm uppercase tracking-widest font-bold">Keep Scrolling</span>
+                  <svg className="w-6 h-6 transform rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                   </svg>
                 </div>
-                
-                <h3 className="text-2xl font-display font-bold text-white mb-4 group-hover:text-accent transition-colors duration-300">
-                  {project.title}
-                </h3>
-                <p className="text-zinc-400 text-sm leading-relaxed mb-8">
-                  {project.description}
-                </p>
-
-                <div className="flex flex-wrap gap-2 mb-10">
-                  {project.tech.map((tech) => (
-                    <span
-                      key={tech}
-                      className="text-[10px] font-bold uppercase tracking-wider text-zinc-500 bg-zinc-950/80 px-2.5 py-1 rounded-lg border border-zinc-800/50 group-hover:border-accent/30 transition-all duration-300"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3 relative z-10">
-                <button
-                  onClick={() => setSelectedProject(project)}
-                  className="flex-1 bg-zinc-800/80 text-white px-4 py-3 rounded-xl text-xs font-bold hover:bg-white hover:text-zinc-950 transition-all duration-300 cursor-pointer"
-                >
-                  DETAILS
-                </button>
-                <a
-                  href={project.live}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 bg-accent text-zinc-950 text-center px-4 py-3 rounded-xl text-xs font-bold hover:bg-white transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-accent/10"
-                >
-                  LIVE SITE
-                </a>
               </div>
             </div>
-          ))}
-        </div>
-      </div>
 
-      {/* Modal */}
+            {/* Slides 1-4: Projects */}
+            {projects.map((project, index) => (
+              <div key={index} className="w-full lg:w-[100vw] h-auto lg:h-full flex flex-col justify-center p-6 py-24 lg:p-24 shrink-0 relative bg-zinc-950 border-b lg:border-b-0 lg:border-l border-zinc-900 overflow-hidden">
+                
+                {/* Huge Background Number */}
+                <div className="absolute -top-10 -right-10 lg:top-10 lg:left-10 text-[12rem] lg:text-[20rem] font-bold text-zinc-900/30 z-0 leading-none pointer-events-none select-none">
+                  0{index + 1}
+                </div>
+
+                <div className="flex flex-col-reverse lg:flex-row items-center w-full h-full max-w-7xl mx-auto gap-12 lg:gap-20 relative z-10">
+                  
+                  {/* Text Content */}
+                  <div className="w-full lg:w-1/2 flex flex-col justify-center">
+                    <h3 className="text-5xl lg:text-7xl font-display font-bold text-white mb-6 tracking-tight">
+                      {project.title}
+                    </h3>
+                    <p className="text-zinc-400 text-lg lg:text-2xl mb-10 leading-relaxed font-light">
+                      {project.description}
+                    </p>
+                    
+                    <div className="flex flex-wrap gap-3 mb-12">
+                      {project.tech.map((tech) => (
+                        <span key={tech} className="px-5 py-2 bg-zinc-900/80 border border-zinc-800 rounded-full text-xs font-bold text-accent tracking-widest uppercase backdrop-blur-sm">
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                    
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <button 
+                        onClick={() => setSelectedProject(project)} 
+                        className="px-8 py-4 bg-white text-zinc-950 font-bold rounded-2xl hover:bg-accent transition-colors duration-300 text-center cursor-pointer"
+                      >
+                        Deep Dive Case Study
+                      </button>
+                      <a 
+                        href={project.live} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="px-8 py-4 bg-transparent border border-zinc-700 text-white font-bold rounded-2xl hover:border-accent hover:text-accent transition-colors duration-300 text-center"
+                      >
+                        Visit Live Site
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Visual/Image Content */}
+                  <div className="w-full lg:w-1/2 h-[40vh] lg:h-[70vh] bg-zinc-900 rounded-[2rem] lg:rounded-[3rem] overflow-hidden border border-zinc-800 shadow-2xl relative group">
+                    {project.video ? (
+                      /\.(webp|png|jpg|jpeg)$/.test(project.video) ? (
+                        <img 
+                          src={project.video} 
+                          alt={project.title}
+                          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
+                        />
+                      ) : (
+                        <video 
+                          src={project.video} 
+                          autoPlay 
+                          loop 
+                          muted 
+                          playsInline
+                          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
+                        />
+                      )
+                    ) : (
+                      <div className="w-full h-full flex flex-col items-center justify-center p-10 text-center bg-gradient-to-br from-zinc-900 to-zinc-950">
+                        <div className="w-20 h-20 bg-zinc-800 rounded-3xl flex items-center justify-center mb-6 shadow-2xl">
+                          <svg className="w-10 h-10 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                          </svg>
+                        </div>
+                        <p className="text-zinc-500 font-medium tracking-widest uppercase text-sm">Visuals Coming Soon</p>
+                      </div>
+                    )}
+                    {/* Hover Overlay */}
+                    <div className="absolute inset-0 bg-accent/0 group-hover:bg-accent/10 transition-colors duration-500 pointer-events-none" />
+                  </div>
+
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Existing Modal logic untouched but polished */}
       {selectedProject && (
         <div className="fixed inset-0 bg-black/95 backdrop-blur-xl flex items-center justify-center z-[100] p-4 md:p-6 overflow-y-auto">
-          <div className="bg-zinc-900 border border-zinc-800 max-w-4xl w-full p-6 md:p-10 rounded-[3rem] relative animate-in fade-in zoom-in duration-300 my-auto shadow-2xl">
+          <div className="bg-zinc-950 border border-zinc-800 max-w-5xl w-full p-6 md:p-12 rounded-[3rem] relative animate-in fade-in zoom-in duration-300 my-auto shadow-2xl">
             {/* Header with Title and Close */}
-            <div className="flex justify-between items-start mb-8">
+            <div className="flex justify-between items-start mb-12">
               <div>
-                <h3 className="text-3xl md:text-5xl font-display font-bold text-white mb-3">
+                <h3 className="text-4xl md:text-6xl font-display font-bold text-white mb-4 tracking-tight">
                   {selectedProject.title}
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {selectedProject.tech.map((tech) => (
-                    <span key={tech} className="text-[10px] font-bold uppercase tracking-wider text-accent border border-accent/30 bg-accent/10 px-3 py-1 rounded-full">
+                    <span key={tech} className="text-[10px] font-bold uppercase tracking-wider text-accent border border-accent/30 bg-accent/10 px-4 py-1.5 rounded-full">
                       {tech}
                     </span>
                   ))}
                 </div>
               </div>
               <button
-                className="p-3 bg-zinc-800 hover:bg-white text-zinc-400 hover:text-zinc-950 rounded-full transition-all duration-300 shadow-xl border border-zinc-700 hover:border-white cursor-pointer"
+                className="p-4 bg-zinc-900 hover:bg-white text-zinc-400 hover:text-zinc-950 rounded-full transition-all duration-300 shadow-xl border border-zinc-800 hover:border-white cursor-pointer group"
                 onClick={() => setSelectedProject(null)}
                 aria-label="Close modal"
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 transform group-hover:rotate-90 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
 
             {/* Content Grid */}
-            <div className="grid lg:grid-cols-12 gap-10 items-start">
-              {/* Left Column: Visual & Links */}
-              <div className="lg:col-span-7 space-y-6">
-                <div className="aspect-video bg-zinc-950 rounded-[2rem] flex items-center justify-center overflow-hidden border border-zinc-800 relative shadow-inner">
+            <div className="grid lg:grid-cols-12 gap-12 items-start">
+              {/* Left Column: Context & Arch */}
+              <div className="lg:col-span-7 space-y-12">
+                <div>
+                  <h4 className="text-sm font-bold text-white uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
+                     <span className="w-2 h-2 bg-accent rounded-full animate-pulse"></span>
+                     Problem Statement
+                  </h4>
+                  <p className="text-zinc-400 text-lg leading-relaxed font-light">
+                    {selectedProject.problem}
+                  </p>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-bold text-white uppercase tracking-[0.2em] mb-6 flex items-center gap-3">
+                     <span className="w-2 h-2 bg-accent rounded-full animate-pulse"></span>
+                     Key Achievements
+                  </h4>
+                  <ul className="space-y-6">
+                    {selectedProject.features?.map((feature, i) => (
+                      <li key={i} className="flex items-start gap-5 text-zinc-300">
+                        <div className="w-6 h-6 rounded-full mt-0.5 bg-accent/10 flex items-center justify-center flex-shrink-0">
+                          <svg className="w-3.5 h-3.5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
+                        <span className="font-light leading-relaxed">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Right Column: Visual & Links */}
+              <div className="lg:col-span-5 space-y-6 sticky top-6">
+                <div className="aspect-video lg:aspect-square bg-zinc-900 rounded-[2rem] flex items-center justify-center overflow-hidden border border-zinc-800 relative shadow-inner">
                   {selectedProject.video ? (
                     /\.(webp|png|jpg|jpeg)$/.test(selectedProject.video) ? (
                       <img 
@@ -206,22 +306,17 @@ function Project() {
                     )
                   ) : (
                     <div className="text-center p-10">
-                      <div className="w-16 h-16 bg-zinc-900 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-zinc-800 shadow-xl">
-                        <svg className="w-8 h-8 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                        </svg>
-                      </div>
-                      <p className="text-zinc-500 font-medium text-sm italic tracking-wide">Detailed documentation and preview coming soon</p>
+                      <p className="text-zinc-600 font-medium text-xs tracking-widest uppercase">Visuals Pending</p>
                     </div>
                   )}
                 </div>
 
-                <div className="flex gap-4">
+                <div className="flex flex-col gap-3">
                   <a
                     href={selectedProject.live}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 bg-white text-zinc-950 text-center py-4 rounded-2xl font-bold hover:bg-accent hover:text-zinc-950 transition-all duration-500 hover:scale-[1.02] active:scale-95 shadow-lg"
+                    className="w-full bg-white text-zinc-950 text-center py-5 rounded-2xl font-bold hover:bg-accent transition-colors duration-300"
                   >
                     VISIT LIVE SITE
                   </a>
@@ -229,50 +324,17 @@ function Project() {
                     href={selectedProject.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 border border-zinc-800 text-white text-center py-4 rounded-2xl font-bold hover:bg-zinc-800 transition-all duration-500 hover:scale-[1.02] active:scale-95"
+                    className="w-full border border-zinc-800 text-white text-center py-5 rounded-2xl font-bold hover:bg-zinc-800 transition-colors duration-300"
                   >
-                    REPOSITORY
+                    VIEW REPOSITORY
                   </a>
-                </div>
-              </div>
-
-              {/* Right Column: Detailed Info */}
-              <div className="lg:col-span-5 space-y-10">
-                <div className="space-y-8">
-                  <div>
-                    <h4 className="text-xs font-bold text-accent uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
-                       <span className="w-1.5 h-1.5 bg-accent rounded-full animate-ping"></span>
-                       Project Context
-                    </h4>
-                    <p className="text-zinc-400 text-sm leading-relaxed font-light">
-                      {selectedProject.problem}
-                    </p>
-                  </div>
-
-                  <div>
-                    <h4 className="text-xs font-bold text-accent uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
-                       Core Architecture
-                    </h4>
-                    <ul className="space-y-4">
-                      {selectedProject.features?.map((feature, i) => (
-                        <li key={i} className="flex items-start gap-4 text-sm text-zinc-400 group/feature">
-                          <div className="w-5 h-5 rounded flex-shrink-0 mt-0.5 border border-accent/20 flex items-center justify-center group-hover/feature:bg-accent/10 transition-colors">
-                            <svg className="w-3 h-3 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
-                            </svg>
-                          </div>
-                          <span className="font-light leading-relaxed">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       )}
-    </section>
+    </>
   );
 }
 
