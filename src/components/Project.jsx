@@ -1,4 +1,27 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+
+const BackgroundVideo = ({ src, className }) => {
+  const videoRef = useRef(null);
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.defaultMuted = true;
+      videoRef.current.muted = true;
+      videoRef.current.play().catch(e => console.log("Autoplay prevented:", e));
+    }
+  }, [src]);
+
+  return (
+    <video
+      ref={videoRef}
+      src={src}
+      autoPlay
+      loop
+      muted
+      playsInline
+      className={className}
+    />
+  );
+};
 
 function Project() {
   const [selectedProject, setSelectedProject] = useState(null);
@@ -131,9 +154,8 @@ function Project() {
                         className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out"
                       />
                     ) : (
-                      <video 
+                      <BackgroundVideo 
                         src={project.video} 
-                        autoPlay loop muted playsInline
                         className="w-full h-full object-cover opacity-60 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out"
                       />
                     )}
@@ -258,12 +280,8 @@ function Project() {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <video 
+                      <BackgroundVideo 
                         src={selectedProject.video} 
-                        autoPlay 
-                        loop 
-                        muted 
-                        playsInline
                         className="w-full h-full object-cover"
                       />
                     )
