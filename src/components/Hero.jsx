@@ -34,7 +34,8 @@ function Hero() {
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row justify-center gap-5 md:gap-8">
           <a
-            href="https://drive.google.com/uc?export=download&id=1mMBUHlcKOi4OUXZLaYvv2nHfRKu2ypVO"
+            href="/Parth_Sharma_Resume.pdf"
+            download="Parth_Sharma_Resume.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="bg-white text-black px-8 py-4 rounded-full font-bold hover:bg-zinc-200 hover:scale-105 transition-all duration-300 shadow-lg shadow-white/10"
