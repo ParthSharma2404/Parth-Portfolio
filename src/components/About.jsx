@@ -1,29 +1,13 @@
-import { useState, useEffect } from "react";
+import { useRef } from "react";
 
 function About() {
-  const [activeTab, setActiveTab] = useState("about.md");
-  const [isInteracting, setIsInteracting] = useState(false);
-
-  // Auto-cycle tabs to show interactivity
-  useEffect(() => {
-    if (isInteracting) return;
-    
-    const tabs = ["about.md", "focus.json", "certifications.yml"];
-    const interval = setInterval(() => {
-      setActiveTab(prev => {
-        const currentIndex = tabs.indexOf(prev);
-        return tabs[(currentIndex + 1) % tabs.length];
-      });
-    }, 4000); // Change tab every 4 seconds
-
-    return () => clearInterval(interval);
-  }, [isInteracting]);
+  const containerRef = useRef(null);
 
   const focusAreas = [
-    { title: "DSA", description: "Problem solving and algorithmic thinking." },
-    { title: "Building Solutions", description: "End-to-end web & software development." },
-    { title: "Full-Stack", description: "Modern MERN and Django architectures." },
-    { title: "UI/UX", description: "Creating user-centric and responsive designs." }
+    { title: "DSA", description: "Problem solving and algorithmic thinking.", icon: "🧠" },
+    { title: "Building Solutions", description: "End-to-end web & software development.", icon: "🏗️" },
+    { title: "Full-Stack", description: "Modern MERN and Django architectures.", icon: "⚡" },
+    { title: "UI/UX", description: "Creating user-centric and responsive designs.", icon: "✨" }
   ];
 
   const certificates = [
@@ -36,165 +20,85 @@ function About() {
   ];
 
   return (
-    <section className="relative min-h-screen max-w-5xl mx-auto px-6 py-24 flex flex-col justify-center overflow-hidden" id="about">
+    <section className="relative min-h-screen max-w-6xl mx-auto px-6 py-24 flex flex-col justify-center overflow-hidden" id="about" ref={containerRef}>
       
-      {/* Decorative Blobs */}
-      <div className="bg-mesh-blob w-[400px] h-[400px] bg-accent/10 top-[-10%] left-[-10%] animate-pulse" />
-      <div className="bg-mesh-blob w-[300px] h-[300px] bg-white/5 bottom-[10%] right-[-5%] animate-pulse" style={{ animationDelay: '1s' }} />
+      {/* Decorative Background */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
 
       {/* Heading */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12 relative z-10">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12 relative z-10 reveal">
         <h2 className="text-4xl md:text-5xl font-display font-bold text-white tracking-tight">
           About Me<span className="text-accent">.</span>
         </h2>
         <div className="hidden md:block h-px flex-1 bg-zinc-800 mx-8 mb-4"></div>
       </div>
 
-      {/* Interactive IDE Window */}
-      <div 
-        className="w-full rounded-xl bg-[#0d1117] border border-zinc-800 shadow-2xl shadow-black/50 overflow-hidden flex flex-col relative z-10 reveal"
-        onMouseEnter={() => setIsInteracting(true)}
-        onClick={() => setIsInteracting(true)}
-      >
+      {/* Bento Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10 reveal reveal-delay-200">
         
-        {/* macOS Header */}
-        <div className="h-12 bg-[#161b22] border-b border-zinc-800 flex items-center px-4 gap-2 relative select-none">
-          <div className="flex gap-2">
-            <div className="w-3.5 h-3.5 rounded-full bg-[#ff5f56] hover:bg-[#ff5f56]/80 cursor-pointer" />
-            <div className="w-3.5 h-3.5 rounded-full bg-[#ffbd2e] hover:bg-[#ffbd2e]/80 cursor-pointer" />
-            <div className="w-3.5 h-3.5 rounded-full bg-[#27c93f] hover:bg-[#27c93f]/80 cursor-pointer" />
-          </div>
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <span className="text-zinc-400 text-xs font-mono font-medium tracking-wider">parth-sharma — portfolio-ide</span>
+        {/* Intro Tile (Spans 2 columns) */}
+        <div className="lg:col-span-2 bg-zinc-900/40 rounded-[2.5rem] p-8 md:p-12 border border-zinc-800/50 backdrop-blur-xl group hover:border-accent/30 transition-all duration-500 overflow-hidden relative shadow-2xl">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-accent/10 rounded-full blur-[80px] -mr-10 -mt-10 group-hover:bg-accent/20 transition-all duration-700 pointer-events-none" />
+          <h3 className="text-3xl md:text-4xl font-display font-bold text-white mb-6 tracking-tight">Hello, I'm Parth.</h3>
+          <div className="space-y-6 text-lg md:text-xl text-zinc-400 leading-relaxed font-medium max-w-2xl">
+            <p>
+              My journey in development started with curiosity about how software works behind the scenes. 
+            </p>
+            <p>
+              Today, that curiosity has evolved into building <span className="text-white">full-stack applications</span>, 
+              <span className="text-accent"> AI-driven tools</span>, and 
+              <span className="text-white"> real-world products</span>. I enjoy turning complex ideas into scalable digital solutions using modern technologies.
+            </p>
           </div>
         </div>
 
-        {/* IDE Body */}
-        <div className="flex flex-col md:flex-row min-h-[500px]">
+        {/* First Focus Tile */}
+        <div className="bg-zinc-900/40 rounded-[2.5rem] p-8 border border-zinc-800/50 backdrop-blur-xl group hover:bg-zinc-800/60 hover:border-zinc-700 transition-all duration-500 flex flex-col justify-center shadow-xl">
+          <span className="text-5xl mb-6 grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 origin-left">{focusAreas[0].icon}</span>
+          <h4 className="text-xl font-bold text-white mb-2">{focusAreas[0].title}</h4>
+          <p className="text-zinc-500 text-sm leading-relaxed">{focusAreas[0].description}</p>
+        </div>
+
+        {/* Remaining Focus Tiles */}
+        {focusAreas.slice(1).map((area, i) => (
+          <div key={i} className="bg-zinc-900/40 rounded-[2.5rem] p-8 border border-zinc-800/50 backdrop-blur-xl group hover:bg-zinc-800/60 hover:border-zinc-700 transition-all duration-500 flex flex-col justify-center shadow-xl">
+            <span className="text-5xl mb-6 grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500 origin-left">{area.icon}</span>
+            <h4 className="text-xl font-bold text-white mb-2">{area.title}</h4>
+            <p className="text-zinc-500 text-sm leading-relaxed">{area.description}</p>
+          </div>
+        ))}
+
+        {/* Certifications Tile (Spans full width) */}
+        <div className="md:col-span-2 lg:col-span-3 bg-zinc-900/40 rounded-[2.5rem] p-8 md:p-10 border border-zinc-800/50 backdrop-blur-xl overflow-hidden relative shadow-2xl">
+          <div className="flex items-center gap-4 mb-8">
+            <h3 className="text-sm font-display font-bold text-zinc-500 uppercase tracking-widest">
+              Certifications
+            </h3>
+            <div className="h-px flex-1 bg-zinc-800"></div>
+          </div>
           
-          {/* Sidebar */}
-          <div className="w-full md:w-56 bg-[#161b22] border-r border-zinc-800 flex flex-col p-4 gap-1 select-none">
-             <span className="text-[10px] font-mono text-zinc-500 mb-3 uppercase tracking-widest font-bold px-2">Explorer</span>
-             
-             {["about.md", "focus.json", "certifications.yml"].map(tab => (
-               <button 
-                 key={tab}
-                 onClick={() => {
-                   setActiveTab(tab);
-                   setIsInteracting(true);
-                 }}
-                 className={`text-left px-3 py-2 rounded-lg font-mono text-sm transition-all duration-200 flex items-center justify-between group
-                   ${activeTab === tab 
-                     ? 'bg-[#0d1117] text-accent border border-zinc-800/50' 
-                     : 'text-zinc-400 hover:bg-zinc-800/30 hover:text-zinc-200 border border-transparent'}`}
-               >
-                 <div className="flex items-center gap-3">
-                   <span className="text-lg group-hover:scale-110 transition-transform">
-                     {tab.endsWith('.md') ? '📝' : tab.endsWith('.json') ? '📋' : '📑'}
-                   </span>
-                   {tab}
-                 </div>
-                 {/* Visual hint that it's clickable */}
-                 {activeTab !== tab && !isInteracting && (
-                   <span className="w-2 h-2 rounded-full bg-accent animate-ping opacity-75"></span>
-                 )}
-               </button>
-             ))}
-          </div>
-
-          {/* Editor Area */}
-          <div className="flex-1 p-6 md:p-10 bg-[#0d1117] font-mono text-sm md:text-[15px] leading-relaxed overflow-x-auto relative">
-            
-            {/* Line Numbers Decoration */}
-            <div className="hidden md:flex flex-col text-zinc-700 absolute left-4 top-10 select-none text-right w-6">
-              {[...Array(15)].map((_, i) => (
-                <span key={i}>{i + 1}</span>
-              ))}
-            </div>
-
-            <div className="md:pl-8">
-              {/* Render about.md */}
-              {activeTab === 'about.md' && (
-                <div className="text-zinc-300 space-y-6 animate-fade-in">
-                  <p>
-                    <span className="text-blue-400">#</span> <span className="font-bold text-white text-2xl tracking-tight">Hello, World!</span>
-                  </p>
-                  <p className="text-zinc-400">
-                    My journey in development started with curiosity about how software works behind the scenes.
-                  </p>
-                  <p className="text-zinc-400">
-                    Today, that curiosity has evolved into building <span className="text-green-400 font-medium">full-stack applications</span>, 
-                    <span className="text-yellow-400 font-medium"> AI-driven tools</span>, and 
-                    <span className="text-purple-400 font-medium"> real-world products</span>. 
-                  </p>
-                  <p className="text-zinc-500 italic mt-8">
-                    {"/*"} I enjoy turning complex ideas into scalable digital solutions using modern technologies. {"*/"}
-                  </p>
-                  
-                  <div className="flex items-center gap-2 mt-8 text-accent animate-pulse">
-                    <span className="text-xl">█</span>
-                  </div>
+          <div className="flex flex-wrap gap-4">
+            {certificates.map((cert, i) => (
+              <a 
+                key={i} 
+                href={cert.link} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="group/cert px-6 py-4 bg-zinc-950/50 rounded-2xl border border-zinc-800 hover:border-accent hover:bg-zinc-900 transition-all flex flex-col gap-1 shadow-inner"
+              >
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-zinc-200 font-medium text-sm group-hover/cert:text-white transition-colors">{cert.name}</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-zinc-600 group-hover/cert:text-accent group-hover/cert:translate-x-0.5 group-hover/cert:-translate-y-0.5 transition-all">
+                    <line x1="7" y1="17" x2="17" y2="7"></line>
+                    <polyline points="7 7 17 7 17 17"></polyline>
+                  </svg>
                 </div>
-              )}
-
-              {/* Render focus.json */}
-              {activeTab === 'focus.json' && (
-                <div className="text-zinc-300 animate-fade-in">
-                  <p className="text-yellow-300">{"{"}</p>
-                  <div className="pl-4 md:pl-8 border-l border-zinc-800">
-                    <p className="text-purple-400">"current_focus"<span className="text-zinc-300">: [</span></p>
-                    <div className="pl-4 md:pl-8 border-l border-zinc-800 mt-2 mb-2 space-y-4">
-                      {focusAreas.map((area, i) => (
-                        <div key={i} className="group cursor-default hover:bg-zinc-800/30 p-2 -ml-2 rounded transition-colors">
-                          <span className="text-yellow-300">{"{"}</span>
-                          <div className="pl-4 md:pl-8">
-                            <p>
-                              <span className="text-blue-400">"title"</span>: <span className="text-green-400">"{area.title}"</span>,
-                            </p>
-                            <p>
-                              <span className="text-blue-400">"description"</span>: <span className="text-orange-300">"{area.description}"</span>
-                            </p>
-                          </div>
-                          <span className="text-yellow-300">{"}"}{i !== focusAreas.length - 1 ? ',' : ''}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <p className="text-zinc-300">{"]"}</p>
-                  </div>
-                  <p className="text-yellow-300">{"}"}</p>
-                </div>
-              )}
-
-              {/* Render certifications.yml */}
-              {activeTab === 'certifications.yml' && (
-                <div className="text-zinc-300 animate-fade-in">
-                  <p className="text-zinc-500 italic mb-8"># Click the certificate names to view credentials</p>
-                  <div className="space-y-6">
-                    {certificates.map((cert, i) => (
-                      <div key={i} className="group">
-                        <p className="text-pink-400 flex items-center gap-2">
-                          - <a 
-                              href={cert.link} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="text-blue-400 font-bold hover:text-accent hover:underline decoration-accent transition-colors"
-                            >
-                              "{cert.name}"
-                            </a>
-                        </p>
-                        <div className="pl-4 md:pl-8 border-l border-zinc-800/50 mt-1 space-y-1">
-                          <p className="text-zinc-400">issuer: <span className="text-yellow-300">"{cert.issuer}"</span></p>
-                          <p className="text-zinc-400">verified: <span className="text-orange-400">true</span></p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
+                <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-widest group-hover/cert:text-zinc-400 transition-colors">{cert.issuer}</span>
+              </a>
+            ))}
           </div>
         </div>
+
       </div>
     </section>
   );
