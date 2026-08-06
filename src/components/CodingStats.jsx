@@ -570,16 +570,16 @@ function CodingStats() {
 
               {/* Codolio Button */}
               <a
-                href="https://codolio.com/profile/parthsharma240404"
+                href="https://codolio.com/profile/Parth_Sharma"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 px-5 py-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 text-white text-xs font-bold rounded-full transition-all duration-300 shadow-[0_0_15px_rgba(99,102,241,0.3)] hover:shadow-[0_0_25px_rgba(99,102,241,0.5)] transform hover:-translate-y-0.5 whitespace-nowrap"
+                className="flex items-center justify-center gap-2.5 px-5 py-2 bg-zinc-950 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-900 text-white text-xs font-bold rounded-full transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(255,255,255,0.05)] transform hover:-translate-y-0.5 whitespace-nowrap"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                  <polyline points="15 3 21 3 21 9"></polyline>
-                  <line x1="10" y1="14" x2="21" y2="3"></line>
-                </svg>
+                <img 
+                  src="https://codolio.com/codolio_assets/codolio.svg" 
+                  alt="Codolio" 
+                  className="w-4 h-4 object-contain"
+                />
                 Codolio Profile
               </a>
             </div>
