@@ -7,6 +7,7 @@ import MusicPlayer from "./components/MusicPlayer";
 const About = lazy(() => import("./components/About"));
 const Work = lazy(() => import("./components/Work"));
 const Project = lazy(() => import("./components/Project"));
+const Personality = lazy(() => import("./components/Personality"));
 const Contact = lazy(() => import("./components/Contact"));
 const Skills = lazy(() => import("./components/Skills"));
 const CodingStats = lazy(() => import("./components/CodingStats"));
@@ -73,6 +74,9 @@ function App() {
         </div>
         <div id="projects">
           <Project />
+        </div>
+        <div id="personality">
+          <Personality />
         </div>
         <div id="contact">
           <Contact />
