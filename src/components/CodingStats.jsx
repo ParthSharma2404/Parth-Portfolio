@@ -165,8 +165,9 @@ function CodingStats() {
 
   // Prepare submission maps for each platform
   const leetcodeCalendar = {};
-  if (leetcodeData?.submissionCalendar) {
-    let cal = leetcodeData.submissionCalendar;
+  const rawLcCalendar = leetcodeData?.submissionCalendar || leetcodeData?.calendar || staticData.leetcode.fallback.calendar;
+  if (rawLcCalendar) {
+    let cal = rawLcCalendar;
     if (typeof cal === 'string') {
       try {
         cal = JSON.parse(cal);
