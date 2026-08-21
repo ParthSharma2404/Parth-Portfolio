@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import staticData from "../data/coding_stats.json";
 
 function CodingStats() {
-  const [loading, setLoading] = useState(true);
-  const [leetcodeData, setLeetcodeData] = useState(null);
-  const [hackerrankData, setHackerrankData] = useState(null);
-  const [gfgData, setGfgData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [leetcodeData, setLeetcodeData] = useState(staticData.leetcode.fallback);
+  const [hackerrankData, setHackerrankData] = useState(staticData.hackerrank);
+  const [gfgData, setGfgData] = useState(staticData.geeksforgeeks);
   const [activeFilter, setActiveFilter] = useState("all");
 
   // Mouse move handlers for premium tilt and glow effects
@@ -36,59 +36,109 @@ function CodingStats() {
   useEffect(() => {
     let completed = false;
 
-    // Timeout of 3.5 seconds to fallback to cached static stats if API is slow
-    const fallbackTimeout = setTimeout(() => {
-      if (!completed) {
-        setLeetcodeData(prev => prev || staticData.leetcode.fallback);
-        setHackerrankData(prev => prev || staticData.hackerrank);
-        setGfgData(prev => prev || staticData.geeksforgeeks);
-        setLoading(false);
-        console.warn("APIs timed out. Loaded local cached fallback.");
+    // 1. Fetch LeetCode stats via serverless endpoint with client-side fallbacks
+    const fetchLeetcode = async () => {
+      try {
+        const res = await fetch(`/api/leetcode?username=${staticData.leetcode.username}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.totalSolved) return data;
+        }
+      } catch (e) {
+        // Continue to fallback
       }
-    }, 3500);
 
-    const fetchLeetcode = fetch(`https://leetcode-api-faisalshohag.vercel.app/${staticData.leetcode.username}`)
-      .then(res => res.ok ? res.json() : null)
-      .then(data => {
-        if (!data) return staticData.leetcode.fallback;
-        return {
-          totalSolved: data.totalSolved || staticData.leetcode.fallback.totalSolved,
-          easySolved: data.easySolved || staticData.leetcode.fallback.easySolved,
-          mediumSolved: data.mediumSolved || staticData.leetcode.fallback.mediumSolved,
-          hardSolved: data.hardSolved || staticData.leetcode.fallback.hardSolved,
-          totalEasy: data.totalEasy || staticData.leetcode.fallback.totalEasy,
-          totalMedium: data.totalMedium || staticData.leetcode.fallback.totalMedium,
-          totalHard: data.totalHard || staticData.leetcode.fallback.totalHard,
-          ranking: data.ranking || staticData.leetcode.fallback.ranking,
-          submissionCalendar: data.submissionCalendar || staticData.leetcode.fallback.calendar,
-          submissionsPastYear: data.totalSubmissions?.[0]?.submissions || staticData.leetcode.fallback.submissionsPastYear,
-          contestRating: staticData.leetcode.fallback.contestRating
-        };
-      })
-      .catch(() => staticData.leetcode.fallback);
+      // Try fallback proxy if local serverless isn't running
+      try {
+        const res = await fetch(`https://alfa-leetcode-api.onrender.com/userProfile/${staticData.leetcode.username}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.totalSolved) {
+            return {
+              ...staticData.leetcode.fallback,
+              totalSolved: data.totalSolved || staticData.leetcode.fallback.totalSolved,
+              easySolved: data.easySolved || staticData.leetcode.fallback.easySolved,
+              mediumSolved: data.mediumSolved || staticData.leetcode.fallback.mediumSolved,
+              hardSolved: data.hardSolved || staticData.leetcode.fallback.hardSolved,
+              ranking: data.ranking || staticData.leetcode.fallback.ranking
+            };
+          }
+        }
+      } catch (e) {
+        // Use local fallback
+      }
 
-    // Dynamic endpoints handled by our Vercel Serverless Functions
-    const fetchHackerRank = fetch(`/api/hackerrank?username=${staticData.hackerrank.username}`)
-      .then(res => res.ok ? res.json() : staticData.hackerrank)
-      .catch(() => staticData.hackerrank);
+      return staticData.leetcode.fallback;
+    };
 
-    const fetchGFG = fetch(`/api/geeksforgeeks?username=${staticData.geeksforgeeks.username}`)
-      .then(res => res.ok ? res.json() : staticData.geeksforgeeks)
-      .catch(() => staticData.geeksforgeeks);
+    // 2. Fetch HackerRank badges directly or through API endpoint
+    const fetchHackerRank = async () => {
+      try {
+        const res = await fetch(`https://www.hackerrank.com/rest/hackers/${staticData.hackerrank.username}/badges`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.models && data.models.length > 0) {
+            const badges = data.models.map(badge => {
+              let color = '#fbbf24';
+              const name = (badge.badge_name || '').toLowerCase();
+              if (name.includes('c++') || name.includes('cpp')) color = '#fbbf24';
+              else if (name.includes('c ') || name === 'c') color = '#94a3b8';
+              else if (name.includes('sql')) color = '#38bdf8';
+              else if (name.includes('java') && !name.includes('script')) color = '#f97316';
+              else if (name.includes('python')) color = '#3b82f6';
+              else if (name.includes('problem')) color = '#ef4444';
 
-    Promise.all([fetchLeetcode, fetchHackerRank, fetchGFG]).then(([lc, hr, gfg]) => {
+              return {
+                name: badge.badge_name,
+                stars: badge.stars || 0,
+                color
+              };
+            });
+
+            return {
+              ...staticData.hackerrank,
+              badges: badges.length > 0 ? badges : staticData.hackerrank.badges
+            };
+          }
+        }
+      } catch (e) {
+        // Fall back to serverless or static
+      }
+
+      try {
+        const res = await fetch(`/api/hackerrank?username=${staticData.hackerrank.username}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data) return data;
+        }
+      } catch (e) {}
+
+      return staticData.hackerrank;
+    };
+
+    // 3. Fetch GeeksforGeeks
+    const fetchGFG = async () => {
+      try {
+        const res = await fetch(`/api/geeksforgeeks?username=${staticData.geeksforgeeks.username}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.problemsSolved) return data;
+        }
+      } catch (e) {}
+
+      return staticData.geeksforgeeks;
+    };
+
+    Promise.all([fetchLeetcode(), fetchHackerRank(), fetchGFG()]).then(([lc, hr, gfg]) => {
       if (!completed) {
-        clearTimeout(fallbackTimeout);
-        setLeetcodeData(lc);
-        setHackerrankData(hr);
-        setGfgData(gfg);
-        setLoading(false);
+        if (lc) setLeetcodeData(lc);
+        if (hr) setHackerrankData(hr);
+        if (gfg) setGfgData(gfg);
       }
     });
 
     return () => {
       completed = true;
-      clearTimeout(fallbackTimeout);
     };
   }, []);
 
@@ -116,10 +166,20 @@ function CodingStats() {
   // Prepare submission maps for each platform
   const leetcodeCalendar = {};
   if (leetcodeData?.submissionCalendar) {
-    Object.entries(leetcodeData.submissionCalendar).forEach(([timestamp, count]) => {
+    let cal = leetcodeData.submissionCalendar;
+    if (typeof cal === 'string') {
+      try {
+        cal = JSON.parse(cal);
+      } catch (e) {
+        cal = {};
+      }
+    }
+    Object.entries(cal || {}).forEach(([timestamp, count]) => {
       const date = new Date(Number(timestamp) * 1000);
-      const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-      leetcodeCalendar[dateStr] = (leetcodeCalendar[dateStr] || 0) + Number(count);
+      if (!isNaN(date.getTime())) {
+        const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+        leetcodeCalendar[dateStr] = (leetcodeCalendar[dateStr] || 0) + Number(count);
+      }
     });
   }
 
