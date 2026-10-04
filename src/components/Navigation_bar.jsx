@@ -3,6 +3,7 @@ function Navigation_bar() {
     { name: "About", href: "#about" },
     { name: "Skills", href: "#skills" },
     { name: "Stats", href: "#stats" },
+    { name: "UniVerse", href: "#universe" },
     { name: "Internship", href: "#internship" },
     { name: "Projects", href: "#projects" },
     { name: "Work", href: "#work" },

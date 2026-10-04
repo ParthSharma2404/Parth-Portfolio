@@ -76,22 +76,6 @@ function Project() {
       colSpan: "md:col-span-1 lg:col-span-1",
     },
     {
-      title: "UNIVERSE",
-      description: "A comprehensive MERN food ordering platform with QR-based ordering and real-time vendor dashboards.",
-      problem: "Campus and large-scale venue food ordering is often chaotic, leading to long queues and inefficient vendor management. There's a need for a unified system handling real-time order tracking and automated financial settlements.",
-      features: [
-        "Real-Time Operations: Built with Socket.io for instantaneous order updates and WebSocket/Telegram notifications.",
-        "Automated Financial Workflows: Deep Razorpay integration handling payments, refunds, and automated settlement workflows.",
-        "Scalable Architecture: MERN stack deployment handling high concurrency, validated by a live pilot with 2,243+ users.",
-        "Smart Analytics: Role-based dashboards with Recharts for visual data representation and Groq AI for insights."
-      ],
-      tech: ["React.js (Vite)", "Node.js", "Express.js", "MongoDB", "Socket.io", "Razorpay", "Groq AI", "JWT", "Recharts", "Vercel"],
-      video: "/videos/universe_video copy.mp4", 
-      live: "#",
-      github: "#",
-      colSpan: "md:col-span-2 lg:col-span-2",
-    },
-    {
       title: "NITS Construction",
       description: "Premium digital home for a UK construction company, optimized for lead conversion.",
       problem: "Traditional construction businesses often lack a digital presence that reflects their craftsmanship. A slow, outdated website can lead to loss of potential high-value clients and fails to showcase the company's portfolio effectively.",
@@ -105,7 +89,7 @@ function Project() {
       video: "/videos/nits.webp",
       live: "https://nitsconstructionltd.co.uk/",
       github: "#",
-      colSpan: "md:col-span-2 lg:col-span-3", // Full width bottom row
+      colSpan: "md:col-span-2 lg:col-span-2", // Balances row 2 in 3-column bento
     }
   ];
 

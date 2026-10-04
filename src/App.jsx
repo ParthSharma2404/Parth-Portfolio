@@ -6,6 +6,7 @@ import MusicPlayer from "./components/MusicPlayer";
 
 const About = lazy(() => import("./components/About"));
 const Work = lazy(() => import("./components/Work"));
+const UniverseSection = lazy(() => import("./components/UniverseSection"));
 const Project = lazy(() => import("./components/Project"));
 const Personality = lazy(() => import("./components/Personality"));
 const Contact = lazy(() => import("./components/Contact"));
@@ -65,6 +66,9 @@ function App() {
         </div>
         <div id="stats">
           <CodingStats />
+        </div>
+        <div id="universe">
+          <UniverseSection />
         </div>
         <div id="internship">
           <Internship />
